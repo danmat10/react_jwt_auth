@@ -3,8 +3,18 @@ import { withSignIn } from "react-auth-kit";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import ENDPOINTS from "../services/endpoints";
-import TextField from "@mui/material/TextField";
+import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 class Login extends Component {
   constructor(props) {
@@ -55,42 +65,80 @@ class Login extends Component {
     }
 
     return (
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}
-      >
-        <div
-          style={{
-            width: "400px",
-            padding: "1rem",
-            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-          }}
-        >
-          <h2 style={{ marginBottom: "1rem" }}>Login</h2>
-          <form onSubmit={this.handleSubmit}>
-            <TextField
-              label="Email"
-              fullWidth
-              type="email"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleHtmlControlChange}
-              style={{ marginBottom: "1rem" }}
-            />
-            <TextField
-              label="Senha"
-              fullWidth
-              type="password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleHtmlControlChange}
-              style={{ marginBottom: "1rem" }}
-            />
-            <Button variant="contained" color="primary" type="submit">
-              Login
-            </Button>
-          </form>
-        </div>
-      </div>
+      <ThemeProvider theme={createTheme()}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box
+              component="form"
+              onSubmit={this.handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                value={this.state.email}
+                onChange={this.handleHtmlControlChange}
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                value={this.state.password}
+                onChange={this.handleHtmlControlChange}
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="#" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        </Container>
+      </ThemeProvider>
     );
   }
 }

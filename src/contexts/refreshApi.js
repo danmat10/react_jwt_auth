@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useAuthHeader, createRefresh } from "react-auth-kit";
-import { BASEURL } from "../config/constants";
 import ENDPOINTS from "../services/endpoints";
 
 const refreshApi = createRefresh({

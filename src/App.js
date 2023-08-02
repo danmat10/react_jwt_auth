@@ -1,4 +1,4 @@
-import React, { component } from "react";
+import React from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import {
@@ -31,18 +31,18 @@ class App extends React.Component {
 
   render() {
     return (
-        <AuthProvider
-          authType={"localstorage"}
-          authName={"_auth"}
-          refresh={refreshApi}
-        >
-          <Router>
-            <Routes>
-              <Route exact path="/" element={<Private Component={Home} />} />
-              <Route exact path="/login" element={<Login />} />
-            </Routes>
-          </Router>
-        </AuthProvider>
+      <AuthProvider
+        authType={"localstorage"}
+        authName={"_auth"}
+        refresh={refreshApi}
+      >
+        <Router>
+          <Routes>
+            <Route exact path="/" element={<Private Component={Home} />} />
+            <Route exact path="/login" element={<Login />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
     );
   }
 }

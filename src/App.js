@@ -9,9 +9,9 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from "react-auth-kit";
 import { useIsAuthenticated } from "react-auth-kit";
-
 import "./App.css";
 import refreshApi from "./contexts/refreshApi";
+import User from "./pages/User";
 
 const Private = ({ Component }) => {
   const isAuthenticated = useIsAuthenticated();
@@ -39,6 +39,7 @@ class App extends React.Component {
         <Router>
           <Routes>
             <Route exact path="/" element={<Private Component={Home} />} />
+            <Route exact path="/users" element={<Private Component={User} />} />
             <Route exact path="/login" element={<Login />} />
           </Routes>
         </Router>

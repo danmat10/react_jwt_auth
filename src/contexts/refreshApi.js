@@ -1,9 +1,10 @@
 import axios from "axios";
 import { createRefresh } from "react-auth-kit";
 import ENDPOINTS from "../services/endpoints";
+import {AUTH_TOKEN_EXPIRES_AT} from "../config/constants";
 
 const refreshApi = createRefresh({
-  interval: 0.5, // Refreshs the token in every 10 minutes
+  interval: AUTH_TOKEN_EXPIRES_AT,
   refreshApiCallback: async ({
     // arguments
     authToken,

@@ -7,14 +7,17 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import UnauthorizedError from "../errors/services/UnauthorizedError";
+import ServerUnavailableError from "../errors/services/ServerUnavailableError";
+import FillAllFieldsError from "../errors/components/FillAllFieldsError";
+import Loading from "../components/Loading";
+import { AUTH_TOKEN_EXPIRES_AT, REFRESH_TOKEN_EXPIRES_AT } from "../config/constants";
 
 class Login extends Component {
   constructor(props) {
@@ -23,6 +26,9 @@ class Login extends Component {
       email: "",
       password: "",
       isSigned: false,
+      errorType: null,
+      formError: false,
+      isLoading: false,
     };
   }
 
@@ -31,30 +37,35 @@ class Login extends Component {
   };
 
   handleSubmit = (event) => {
-    console.log(this.state);
     event.preventDefault();
+    this.setState({ formError: false, isLoading: true });
+    if (!this.state.email || !this.state.password) {
+      this.setState({ formError: true, isLoading: false });
+      return;
+    }
     axios
-      .post(ENDPOINTS.AUTH.LOGIN, this.state)
+      .post(ENDPOINTS.AUTH.LOGIN, {
+        email: this.state.email,
+        password: this.state.password,
+      })
       .then((response) => {
-        if (
-          this.props.signIn({
-            expiresIn: 5,
-            token: response.data.access_token,
-            tokenType: "Bearer",
-            refreshToken: response.data.refresh_token,
-            refreshTokenExpireIn: 1500,
-            authState: true,
-          })
-        ) {
-          this.setState({ isSigned: true });
-          console.log(response.data.access_token);
-        } else {
-          console.log("error signin");
-          // Throw error
-        }
-        this.setState({ message: "User logged successfully." });
+        this.props.signIn({
+          expiresIn: AUTH_TOKEN_EXPIRES_AT,
+          token: response.data.access_token,
+          tokenType: "Bearer",
+          refreshToken: response.data.refresh_token,
+          refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_AT,
+        });
+        this.setState({ isSigned: true, isLoading: false });
       })
       .catch((error) => {
+        let errorType = null;
+        if (error.response && error.response.status === 401) {
+          errorType = "unauthorized";
+        } else if (error.request) {
+          errorType = "serverUnavailable";
+        }
+        this.setState({ errorType, isLoading: false }); //implementar erro genérico
         console.log(error);
       });
   };
@@ -76,10 +87,24 @@ class Login extends Component {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            </Avatar>
+            {this.state.isLoading && <Loading />}
+            {this.state.errorType === "unauthorized" && <UnauthorizedError />}
+            {this.state.errorType === "serverUnavailable" && (
+              <ServerUnavailableError />
+            )}
+            {this.state.formError && <FillAllFieldsError />}
+          </Box>
+          <Box
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Realizar Login
             </Typography>
             <Box
               component="form"
@@ -92,7 +117,7 @@ class Login extends Component {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Digite o e-mail"
                 name="email"
                 value={this.state.email}
                 onChange={this.handleHtmlControlChange}
@@ -104,16 +129,12 @@ class Login extends Component {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Digite a senha"
                 type="password"
                 id="password"
                 value={this.state.password}
                 onChange={this.handleHtmlControlChange}
                 autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
               />
               <Button
                 type="submit"
@@ -121,17 +142,12 @@ class Login extends Component {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Fazer Login
               </Button>
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                    Esqueceu sua senha?
                   </Link>
                 </Grid>
               </Grid>

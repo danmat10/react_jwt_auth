@@ -6,10 +6,6 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div>

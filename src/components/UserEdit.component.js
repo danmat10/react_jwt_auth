@@ -51,7 +51,6 @@ const UserEdit = ({ user, onUpdate, setErrorType }) => {
               name="name"
               type="text"
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
               value={formik.values.name}
               error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={formik.touched.name && formik.errors.name}
@@ -64,7 +63,6 @@ const UserEdit = ({ user, onUpdate, setErrorType }) => {
               name="email"
               type="email"
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
               value={formik.values.email}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}

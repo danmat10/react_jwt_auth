@@ -21,7 +21,6 @@ import {
   AUTH_TOKEN_EXPIRES_AT,
   REFRESH_TOKEN_EXPIRES_AT,
 } from "../config/constants";
-import { useIsAuthenticated } from "react-auth-kit";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -30,7 +29,6 @@ const Login = (props) => {
   const [formError, setFormError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const signIn = useSignIn();
-  const isAuthenticated = useIsAuthenticated();
 
   const handleHtmlControlChange = (event) => {
     const { name, value } = event.target;
@@ -74,9 +72,6 @@ const Login = (props) => {
       });
   };
 
-  if (isAuthenticated()) {
-    return <Navigate to={"/"} replace />;
-  }
   return (
     <ThemeProvider theme={createTheme()}>
       <Container component="main" maxWidth="xs">

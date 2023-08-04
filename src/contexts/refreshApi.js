@@ -6,7 +6,6 @@ import {AUTH_TOKEN_EXPIRES_AT} from "../config/constants";
 const refreshApi = createRefresh({
   interval: AUTH_TOKEN_EXPIRES_AT,
   refreshApiCallback: async ({
-    // arguments
     authToken,
     authTokenExpireAt,
     refreshToken,
@@ -20,8 +19,7 @@ const refreshApi = createRefresh({
       return {
         isSuccess: true,
         newAuthToken: response.data.access_token,
-        newAuthTokenExpireIn: 10,
-        newRefreshTokenExpiresIn: 60,
+        newAuthTokenExpireIn: AUTH_TOKEN_EXPIRES_AT,
       };
     } catch (error) {
       console.error(error);

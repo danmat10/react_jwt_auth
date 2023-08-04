@@ -13,10 +13,16 @@ import "./App.css";
 import refreshApi from "./contexts/refreshApi";
 import User from "./pages/User";
 
-const Private = ({ Component }) => {
+const PrivateRoute = ({ Component }) => {
   const isAuthenticated = useIsAuthenticated();
   const auth = isAuthenticated();
   return auth ? <Component /> : <Navigate to="/login" />;
+};
+
+const LoginRoute = ({ Component }) => {
+  const isAuthenticated = useIsAuthenticated();
+  const auth = isAuthenticated();
+  return auth ? <Navigate to="/" /> : <Component />;
 };
 
 class App extends React.Component {
@@ -38,9 +44,17 @@ class App extends React.Component {
       >
         <Router>
           <Routes>
-            <Route exact path="/" element={<Private Component={Home} />} />
-            <Route exact path="/users" element={<Private Component={User} />} />
-            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/" element={<PrivateRoute Component={Home} />} />
+            <Route
+              exact
+              path="/users"
+              element={<PrivateRoute Component={User} />}
+            />
+            <Route
+              exact
+              path="/login"
+              element={<LoginRoute Component={Login} />}
+            />
           </Routes>
         </Router>
       </AuthProvider>

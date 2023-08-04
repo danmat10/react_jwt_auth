@@ -15,7 +15,7 @@ import User from "./pages/User";
 
 const Private = ({ Component }) => {
   const isAuthenticated = useIsAuthenticated();
-  const auth = isAuthenticated(); //your logic
+  const auth = isAuthenticated();
   return auth ? <Component /> : <Navigate to="/login" />;
 };
 
@@ -32,7 +32,7 @@ class App extends React.Component {
   render() {
     return (
       <AuthProvider
-        authType={"localStorage"}
+        authType={"localstorage"}
         authName={"_auth"}
         refresh={refreshApi}
       >

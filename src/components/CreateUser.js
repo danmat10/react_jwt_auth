@@ -7,9 +7,7 @@ const CreateUser = ({ onCreate }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Chamar a função de criação passada através das props
     onCreate({ name, email });
-    // Limpar os campos do formulário
     setName("");
     setEmail("");
   };

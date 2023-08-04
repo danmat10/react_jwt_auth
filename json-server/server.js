@@ -40,7 +40,8 @@ server.post("/auth/login", (req, res) => {
 
 // Middleware para validar JWT
 const validateJWT = (req, res, next) => {
-  const token = req.headers["authorization"];
+  const authHeader = req.headers["authorization"];
+  const token = authHeader.split(' ')[1]; // Dividindo a string pelo espaço para pegar apenas o token
 
   if (token) {
     jwt.verify(token, SECRET_KEY, (err, user) => {

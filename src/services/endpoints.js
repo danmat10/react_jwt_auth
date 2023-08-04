@@ -5,6 +5,9 @@ const ENDPOINTS = {
     LOGIN: BASEURL + "/auth/login",
     REFRESH: BASEURL + "/auth/refresh-token",
   },
+  USER: {
+    POST: BASEURL + "/db/users",
+  }
 };
 
 export default ENDPOINTS;

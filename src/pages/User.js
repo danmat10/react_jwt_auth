@@ -1,67 +1,94 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Grid, Fab } from "@mui/material";
+import { Container, Grid, Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import Header from "../components/Header";
-import CreateUser from "../components/CreateUser";
+import Header from "../components/Header.component";
+import CreateUser from "../components/UserCreate.component";
 import Dialog from "@mui/material/Dialog";
 import ENDPOINTS from "../services/endpoints";
 import axios from "axios";
-import { useAuthHeader } from 'react-auth-kit'
-import UnauthorizedError from "../errors/services/UnauthorizedError";
-import ServerUnavailableError from "../errors/services/ServerUnavailableError";
+import { useAuthHeader } from "react-auth-kit";
+import UnauthorizedError from "../errors/services/UnauthorizedError.component";
+import ServerUnavailableError from "../errors/services/ServerUnavailableError.component";
 import { DialogContent } from "@mui/material";
-import Loading from "../components/Loading";
-import FillAllFieldsError from "../errors/components/FillAllFieldsError";
+import Loading from "../components/Loading.component";
 import Alert from "@mui/material/Alert";
+import UserList from "../components/UserList.component";
+import UserEdit from "../components/UserEdit.component";
+import EqualFieldsError from "../errors/components/EqualFieldsError.component";
+import UserView from "../components/UserView.component";
 
 const UserPage = () => {
-  const [view, setView] = useState("list"); // Pode ser 'list', 'create', 'update'
+  useEffect(() => {
+    handleUpdateUserList();
+  }, []);
+
+  const [view, setView] = useState("list"); // Pode ser 'list', 'create', 'update', 'view'
   const [selectedUser, setSelectedUser] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [errorType, setErrorType] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [formError, setFormError] = useState(false);
   const [sucess, setSucess] = useState(false);
-
+  const [users, setUsers] = useState([]);
   const authHeader = useAuthHeader();
+
   const handleOpen = () => setOpen(true);
+
   const handleClose = () => {
     setOpen(false);
-    setErrorType(null); // Limpa o tipo de erro quando o diálogo é fechado
+    setErrorType(null);
+    setView("list");
   };
 
-  // Função para abrir o formulário de criação
+  const handleOpenViewForm = (user) => {
+    setView("view");
+    setOpen(true);
+    setSelectedUser(user);
+  };
+
   const handleOpenCreateForm = () => {
     setView("create");
+    setErrorType(null);
+    setIsLoading(false);
+    setSucess(false);
     handleOpen();
   };
 
-  // Função para manipular a criação de um novo usuário
-  const handleCreate = (user) => {
-    setFormError(false);
+  const handleOpenEditForm = (user) => {
+    setView("update");
+    setSelectedUser(user);
+    setErrorType(null);
+    setIsLoading(false);
+    setSucess(false);
+    handleOpen();
+  };
+
+  const handleCreateUser = (user) => {
     setIsLoading(true);
-    if (!user.name || !user.email) {
-      setFormError(true);
-      return;
-    }
     axios
-      .post(ENDPOINTS.USER.POST, {
-        email: user.email,
-        name: user.name,
-      }, {
-        headers: {
-          'Authorization': `${authHeader()}`
+      .post(
+        ENDPOINTS.USER.POST,
+        {
+          email: user.email,
+          name: user.name,
+        },
+        {
+          headers: {
+            Authorization: `${authHeader()}`,
+          },
         }
-      })
+      )
       .then((response) => {
         setIsLoading(false);
         setSucess(true);
-        console.log(response);
+        handleUpdateUserList();
       })
       .catch((error) => {
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
           setIsLoading(false);
-          setErrorType("unauthorized")
+          setErrorType("unauthorized");
         } else if (error.request) {
           setIsLoading(false);
           setErrorType("serverUnavailable");
@@ -69,16 +96,67 @@ const UserPage = () => {
         setIsLoading(false);
         console.log(error);
       });
-    setView("list");
   };
 
-  // Função para manipular a atualização de um usuário existente
-  const handleUpdate = (user) => {
-    // Chamar a API para atualizar o usuário e, em seguida, atualizar a lista
-    setView("list");
+  const handleUpdateUserList = () => {
+    axios
+      .get(ENDPOINTS.USER.GET, {
+        headers: {
+          Authorization: `${authHeader()}`,
+        },
+      })
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
+          setErrorType("unauthorized");
+        } else if (error.request) {
+          setErrorType("serverUnavailable");
+        }
+        console.log(error);
+      });
   };
 
-  // Função para manipular a exclusão de um usuário
+  const handleEditUser = (values) => {
+    setIsLoading(true);
+    axios
+      .patch(
+        ENDPOINTS.USER.PATCH + selectedUser.id,
+        {
+          email: values.email,
+          name: values.name,
+        },
+        {
+          headers: {
+            Authorization: `${authHeader()}`,
+          },
+        }
+      )
+      .then((response) => {
+        setIsLoading(false);
+        setSucess(true);
+        handleUpdateUserList();
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
+          setIsLoading(false);
+          setErrorType("unauthorized");
+        } else if (error.request) {
+          setIsLoading(false);
+          setErrorType("serverUnavailable");
+        }
+        setIsLoading(false);
+        console.log(error);
+      });
+  };
+
   const handleDelete = (user) => {
     // Chamar a API para excluir o usuário e, em seguida, atualizar a lista
   };
@@ -86,10 +164,16 @@ const UserPage = () => {
   return (
     <div>
       <Header />
-      <span>Usuários</span>
       <Container>
         <Grid container spacing={3}>
-          <Grid item xs={12}></Grid>
+          <Grid item xs={12}>
+            <UserList
+              users={users}
+              onEdit={handleOpenEditForm}
+              onDelete={handleDelete}
+              onView={handleOpenViewForm}
+            />
+          </Grid>
         </Grid>
         {/* <DeleteDialog onDelete={handleDelete} /> */}
         <Fab
@@ -108,15 +192,25 @@ const UserPage = () => {
         aria-describedby="modal-modal-description"
       >
         <DialogContent>
-          {sucess && <Alert severity="success" variant="filled">
-            Usuário criado com sucesso!
-          </Alert>}
+          {sucess && (
+            <Alert severity="success" variant="filled">
+              Solicitação feita com sucesso!
+            </Alert>
+          )}
           {isLoading && <Loading />}
-          {formError && <FillAllFieldsError />}
           {errorType === "unauthorized" && <UnauthorizedError />}
           {errorType === "serverUnavailable" && <ServerUnavailableError />}
+          {errorType === "equalFields" && <EqualFieldsError />}
         </DialogContent>
-        <CreateUser onCreate={handleCreate} />
+        {view === "create" && <CreateUser onCreate={handleCreateUser} />}
+        {view === "update" && (
+          <UserEdit
+            user={selectedUser}
+            onUpdate={handleEditUser}
+            setErrorType={setErrorType}
+          />
+        )}
+        {view === "view" && <UserView user={selectedUser} />}
       </Dialog>
     </div>
   );

@@ -32,7 +32,7 @@ class App extends React.Component {
   render() {
     return (
       <AuthProvider
-        authType={"cookie"}
+        authType={"localStorage"}
         authName={"_auth"}
         refresh={refreshApi}
       >

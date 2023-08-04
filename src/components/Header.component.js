@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "./LogoutButton.component";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";

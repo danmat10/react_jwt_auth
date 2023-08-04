@@ -13,23 +13,41 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import UnauthorizedError from "../errors/services/UnauthorizedError";
-import ServerUnavailableError from "../errors/services/ServerUnavailableError";
-import FillAllFieldsError from "../errors/components/FillAllFieldsError";
-import Loading from "../components/Loading";
-import { AUTH_TOKEN_EXPIRES_AT, REFRESH_TOKEN_EXPIRES_AT } from "../config/constants";
+import UnauthorizedError from "../errors/services/UnauthorizedError.component";
+import ServerUnavailableError from "../errors/services/ServerUnavailableError.component";
+import FillAllFieldsError from "../errors/components/FillAllFieldsError.component";
+import Loading from "../components/Loading.component";
+import {
+  AUTH_TOKEN_EXPIRES_AT,
+  REFRESH_TOKEN_EXPIRES_AT,
+} from "../config/constants";
 
 class Login extends Component {
   constructor(props) {
     super(props);
+    const access_token = localStorage.getItem("access_token");
+    const refresh_token = localStorage.getItem("refresh_token");
     this.state = {
       email: "",
       password: "",
-      isSigned: false,
       errorType: null,
       formError: false,
       isLoading: false,
+      isSigned: false,
     };
+    if (access_token !== null && refresh_token !== null) {
+      this.props.signIn({
+        expiresIn: AUTH_TOKEN_EXPIRES_AT,
+        token: access_token,
+        tokenType: "Bearer",
+        refreshToken: refresh_token,
+        refreshTokenExpireIn: REFRESH_TOKEN_EXPIRES_AT,
+      });
+      this.setState({ isSigned: true, isLoading: false });
+    } else {
+      this.setState({ isSigned: false });
+    }
+    console.log(this.state)
   }
 
   handleHtmlControlChange = (event) => {
@@ -72,7 +90,7 @@ class Login extends Component {
 
   render() {
     if (this.state.isSigned) {
-      return <Navigate to="/" />;
+      return <Navigate to={"/"} replace />;
     }
 
     return (

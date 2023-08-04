@@ -15,7 +15,7 @@ const refreshApi = createRefresh({
   }) => {
     try {
       const response = await axios.post(ENDPOINTS.AUTH.REFRESH, {
-        refreshToken: refreshToken,
+        refresh_token: refreshToken,
       });
       return {
         isSuccess: true,

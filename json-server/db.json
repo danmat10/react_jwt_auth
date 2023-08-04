@@ -20,15 +20,21 @@
     {
       "id": 1,
       "email": "admin@admin.com",
-      "password": "admin"
+      "password": "admin",
+      "values": {
+        "name": "Daniel",
+        "email": "admin@admin.com"
+      },
+      "name": "Daniel"
     },
     {
       "id": 2,
       "email": "user@user.com",
-      "password": "user"
+      "password": "user",
+      "name": "Daniel Matthes"
     },
     {
-      "email": "sss@sss.com",
+      "email": "danielmatthes10@hotmail.com",
       "name": "ssss",
       "id": 3
     },
@@ -51,6 +57,36 @@
       "email": "daniel@mmm.com",
       "name": "daneil",
       "id": 7
+    },
+    {
+      "email": "user@user.com",
+      "name": "Daniel",
+      "id": 8
+    },
+    {
+      "email": "user@user.com",
+      "name": "Administrador",
+      "id": 9
+    },
+    {
+      "email": "user@user.com",
+      "name": "Administrador",
+      "id": 10
+    },
+    {
+      "email": "user@user.com",
+      "name": "Administrador",
+      "id": 11
+    },
+    {
+      "email": "user@user.com",
+      "name": "Administrador",
+      "id": 12
+    },
+    {
+      "email": "user@user.com",
+      "name": "Administrador",
+      "id": 13
     }
   ]
 }

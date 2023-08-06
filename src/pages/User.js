@@ -20,7 +20,7 @@ import UserView from "../components/User/UserView.component";
 const UserPage = () => {
   useEffect(() => {
     handleUpdateUserList();
-  });
+  }, []);
 
   const [view, setView] = useState("list"); // Pode ser 'list', 'create', 'update', 'view'
   const [selectedUser, setSelectedUser] = useState(null);

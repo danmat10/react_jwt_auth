@@ -1,56 +1,73 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
+import React, { useState } from "react";
+import { Box, TextField } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import ViewIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ViewIcon from "@mui/icons-material/Visibility";
 
 const UserList = ({ users, onEdit, onDelete, onView }) => {
+  const [search, setSearch] = useState("");
+
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(search.toLowerCase()) ||
+      user.email.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const columns = [
+    { field: "name", headerName: "Nome", width: 150 },
+    { field: "email", headerName: "E-mail", width: 200 },
+    {
+      field: "actions",
+      headerName: "Ações",
+      width: 150,
+      renderCell: (params) => (
+        <>
+          <ViewIcon
+            color="primary"
+            onClick={() => onView(params.row)}
+            style={{ cursor: "pointer" }}
+            titleAccess="Visualizar"
+          />
+          <EditIcon
+            color="primary"
+            onClick={() => onEdit(params.row)}
+            style={{ cursor: "pointer" }}
+            titleAccess="Editar"
+          />
+          <DeleteIcon
+            color="secondary"
+            onClick={() => onDelete(params.row)}
+            style={{ cursor: "pointer" }}
+            titleAccess="Excluir"
+          />
+        </>
+      ),
+    },
+  ];
+
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Nome</TableCell>
-            <TableCell align="right">E-mail</TableCell>
-            <TableCell align="right">Ações</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell component="th" scope="row">
-                {user.name}
-              </TableCell>
-              <TableCell align="right">{user.email}</TableCell>
-              <TableCell align="right">
-                <ViewIcon
-                  color="primary"
-                  onClick={() => onView(user)}
-                  style={{ cursor: "pointer" }}
-                />
-                <EditIcon
-                  color="primary"
-                  onClick={() => onEdit(user)}
-                  style={{ cursor: "pointer" }}
-                />
-                <DeleteIcon
-                  color="secondary"
-                  onClick={() => onDelete(user)}
-                  style={{ cursor: "pointer" }}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box>
+      <Box marginTop={2}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Pesquisar usuário"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </Box>
+      <Box sx={{ height: 500, width: "100%" }}>
+        <DataGrid
+          rows={filteredUsers}
+          columns={columns}
+          autoPageSize
+          pageSizeOptions={[10]}
+          checkboxSelection={false}
+          disableSelectionOnClick
+        />
+      </Box>
+    </Box>
   );
 };
 

@@ -19,7 +19,7 @@
   "users": [
     {
       "id": 1,
-      "email": "admin@admin.com",
+      "email": "admin@admin.co",
       "password": "admin",
       "values": {
         "name": "Daniel",
@@ -28,34 +28,8 @@
       "name": "Daniel"
     },
     {
-      "id": 2,
-      "email": "user@user.com",
-      "password": "user",
-      "name": "Daniel Matthes"
-    },
-    {
-      "email": "danielmatthes10@hotmail.com",
-      "name": "ssss",
-      "id": 3
-    },
-    {
-      "email": "ssss@sss.com",
-      "name": "ssss",
-      "id": 4
-    },
-    {
-      "email": "sss@sss.com",
-      "name": "ssss",
-      "id": 5
-    },
-    {
-      "email": "ssss@sss.com",
-      "name": "ssss",
-      "id": 6
-    },
-    {
       "email": "daniel@mmm.com",
-      "name": "daneil",
+      "name": "DANIEL MATTHES",
       "id": 7
     },
     {
@@ -87,6 +61,26 @@
       "email": "user@user.com",
       "name": "Administrador",
       "id": 13
+    },
+    {
+      "email": "teste@t.com",
+      "name": "Teste",
+      "id": 14
+    },
+    {
+      "email": "user@user.com",
+      "name": "admin",
+      "id": 15
+    },
+    {
+      "email": "john@mail.com",
+      "name": "admin",
+      "id": 16
+    },
+    {
+      "name": "Admin",
+      "email": "carolainelimab@gmail.com",
+      "id": 17
     }
   ]
 }

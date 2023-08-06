@@ -1,8 +1,9 @@
 import React from "react";
 import { useFormik } from "formik";
-import { Button, Grid, Paper, DialogActions } from "@mui/material";
+import { Button, DialogActions } from "@mui/material";
 import UserFormFields from "./UserFormFields.component";
-import {validateUserCreateForm} from "./UserValidations";
+import { validateUserCreateForm } from "./UserValidations";
+import { DialogTitle, DialogContent, DialogContentText } from "@mui/material";
 
 const CreateUser = ({ onCreate }) => {
   const formik = useFormik({
@@ -18,20 +19,24 @@ const CreateUser = ({ onCreate }) => {
   });
 
   return (
-    <Paper style={{ padding: 16 }}>
-      <form onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
+    <>
+      <DialogTitle>Criar Usuário</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Você está na janela de criação de novo usuário. Preencha os campos com
+          as informações do novo usuário e clique em 'Criar' para adicionar à
+          lista de usuários.
+        </DialogContentText>
+        <form onSubmit={formik.handleSubmit}>
           <UserFormFields formik={formik} />
-          <Grid item xs={12}>
-            <DialogActions>
-              <Button type="submit" color="primary">
-                Criar
-              </Button>
-            </DialogActions>
-          </Grid>
-        </Grid>
-      </form>
-    </Paper>
+          <DialogActions>
+            <Button type="submit" color="primary">
+              Criar
+            </Button>
+          </DialogActions>
+        </form>
+      </DialogContent>
+    </>
   );
 };
 

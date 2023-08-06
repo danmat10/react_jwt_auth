@@ -9,20 +9,20 @@ import axios from "axios";
 import { useAuthHeader } from "react-auth-kit";
 import UnauthorizedError from "../errors/services/UnauthorizedError.component";
 import ServerUnavailableError from "../errors/services/ServerUnavailableError.component";
-import { DialogContent } from "@mui/material";
 import Loading from "../components/Loading.component";
 import Alert from "@mui/material/Alert";
 import UserList from "../components/User/UserList.component";
 import UserEdit from "../components/User/UserEdit.component";
 import EqualFieldsError from "../errors/components/EqualFieldsError.component";
 import UserView from "../components/User/UserView.component";
+import UserDelete from "../components/User/UserDelete.component";
 
 const UserPage = () => {
   useEffect(() => {
     handleUpdateUserList();
   }, []);
 
-  const [view, setView] = useState("list"); // Pode ser 'list', 'create', 'update', 'view'
+  const [view, setView] = useState("list"); // Pode ser 'list', 'create', 'update', 'view', delete
   const [selectedUser, setSelectedUser] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [errorType, setErrorType] = useState(null);
@@ -43,6 +43,12 @@ const UserPage = () => {
     setOpen(false);
     handleMessages();
     setView("list");
+  };
+
+  const handleOpenDeleteForm = (user) => {
+    setView("delete");
+    setOpen(true);
+    setSelectedUser(user);
   };
 
   const handleOpenViewForm = (user) => {
@@ -67,18 +73,11 @@ const UserPage = () => {
     handleMessages();
     setIsLoading(true);
     axios
-      .post(
-        ENDPOINTS.USER.POST,
-        {
-          email: user.email,
-          name: user.name,
+      .post(ENDPOINTS.USER.POST, user, {
+        headers: {
+          Authorization: `${authHeader()}`,
         },
-        {
-          headers: {
-            Authorization: `${authHeader()}`,
-          },
-        }
-      )
+      })
       .then((response) => {
         setIsLoading(false);
         setSucess(true);
@@ -123,22 +122,15 @@ const UserPage = () => {
       });
   };
 
-  const handleEditUser = (values) => {
+  const handleEditUser = (user) => {
     handleMessages();
     setIsLoading(true);
     axios
-      .patch(
-        ENDPOINTS.USER.PATCH + selectedUser.id,
-        {
-          email: values.email,
-          name: values.name,
+      .patch(ENDPOINTS.USER.PATCH + selectedUser.id, user, {
+        headers: {
+          Authorization: `${authHeader()}`,
         },
-        {
-          headers: {
-            Authorization: `${authHeader()}`,
-          },
-        }
-      )
+      })
       .then((response) => {
         setIsLoading(false);
         setSucess(true);
@@ -161,29 +153,54 @@ const UserPage = () => {
   };
 
   const handleDelete = (user) => {
-    // Chamar a API para excluir o usuário e, em seguida, atualizar a lista
+    handleMessages();
+    setIsLoading(true);
+    axios
+      .delete(ENDPOINTS.USER.PATCH + selectedUser.id, {
+        headers: {
+          Authorization: `${authHeader()}`,
+        },
+      })
+      .then((response) => {
+        setIsLoading(false);
+        setSucess(true);
+        setView("list");
+        handleUpdateUserList();
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
+          setIsLoading(false);
+          setErrorType("unauthorized");
+        } else if (error.request) {
+          setIsLoading(false);
+          setErrorType("serverUnavailable");
+        }
+        setIsLoading(false);
+        console.log(error);
+      });
   };
 
   return (
     <div>
       <Header />
       <Container>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
+        <Grid container>
             <UserList
               users={users}
               onEdit={handleOpenEditForm}
-              onDelete={handleDelete}
+              onDelete={handleOpenDeleteForm}
               onView={handleOpenViewForm}
             />
-          </Grid>
         </Grid>
-        {/* <DeleteDialog onDelete={handleDelete} /> */}
         <Fab
           color="primary"
           aria-label="add"
           onClick={handleOpenCreateForm}
           style={{ position: "fixed", bottom: 20, right: 20 }}
+          title="Adicionar usuário"
         >
           <AddIcon />
         </Fab>
@@ -191,26 +208,31 @@ const UserPage = () => {
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
       >
-        <DialogContent>
-          {sucess && (
-            <Alert severity="success" variant="filled">
-              Solicitação feita com sucesso!
-            </Alert>
-          )}
-          {isLoading && <Loading />}
-          {errorType === "unauthorized" && <UnauthorizedError />}
-          {errorType === "serverUnavailable" && <ServerUnavailableError />}
-          {errorType === "equalFields" && <EqualFieldsError />}
-        </DialogContent>
+        {sucess && (
+          <Alert severity="success" variant="filled">
+            Solicitação feita com sucesso!
+          </Alert>
+        )}
+        {isLoading && <Loading />}
+        {errorType === "unauthorized" && <UnauthorizedError />}
+        {errorType === "serverUnavailable" && <ServerUnavailableError />}
+        {errorType === "equalFields" && <EqualFieldsError />}
         {view === "create" && <CreateUser onCreate={handleCreateUser} />}
         {view === "update" && (
           <UserEdit
             user={selectedUser}
             onUpdate={handleEditUser}
             setErrorType={setErrorType}
+          />
+        )}
+        {view === "delete" && (
+          <UserDelete
+            user={selectedUser}
+            handleDelete={handleDelete}
+            handleClose={handleClose}
           />
         )}
         {view === "view" && <UserView user={selectedUser} />}

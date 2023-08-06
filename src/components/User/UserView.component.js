@@ -1,20 +1,43 @@
 import React from "react";
-import { Typography, Grid, Paper } from "@mui/material";
+import {
+  Typography,
+  Grid,
+  Paper,
+  Box,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 
 const UserView = ({ user }) => {
   return (
-    <Paper style={{ padding: 16 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="h6">Nome:</Typography>
-          <Typography variant="body1">{user.name}</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6">E-mail:</Typography>
-          <Typography variant="body1">{user.email}</Typography>
-        </Grid>
-      </Grid>
-    </Paper>
+    <>
+      <DialogTitle>Visualizar Usuário</DialogTitle>
+
+      <DialogContent>
+        <DialogContentText marginBottom={2}>
+          Você está visualizando os detalhes do usuário. Aqui estão todas as
+          informações associadas a esse usuário.
+        </DialogContentText>
+        <Typography variant="subtitle1" align="center">
+          Nome
+        </Typography>
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          align="center"
+          paragraph
+        >
+          {user.name}
+        </Typography>
+        <Typography variant="subtitle1" align="center">
+          E-mail
+        </Typography>
+        <Typography variant="body1" color="textSecondary" align="center">
+          {user.email}
+        </Typography>
+      </DialogContent>
+    </>
   );
 };
 

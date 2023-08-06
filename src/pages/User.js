@@ -31,11 +31,17 @@ const UserPage = () => {
   const [users, setUsers] = useState([]);
   const authHeader = useAuthHeader();
 
+  const handleMessages = () => {
+    setErrorType(null);
+    setSucess(false);
+    setIsLoading(false);
+  };
+
   const handleOpen = () => setOpen(true);
 
   const handleClose = () => {
     setOpen(false);
-    setErrorType(null);
+    handleMessages();
     setView("list");
   };
 
@@ -48,21 +54,17 @@ const UserPage = () => {
   const handleOpenCreateForm = () => {
     setView("create");
     setErrorType(null);
-    setIsLoading(false);
-    setSucess(false);
     handleOpen();
   };
 
   const handleOpenEditForm = (user) => {
     setView("update");
     setSelectedUser(user);
-    setErrorType(null);
-    setIsLoading(false);
-    setSucess(false);
     handleOpen();
   };
 
   const handleCreateUser = (user) => {
+    handleMessages();
     setIsLoading(true);
     axios
       .post(
@@ -122,6 +124,7 @@ const UserPage = () => {
   };
 
   const handleEditUser = (values) => {
+    handleMessages();
     setIsLoading(true);
     axios
       .patch(

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Grid, Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Header from "../components/Header.component";
-import CreateUser from "../components/UserCreate.component";
+import CreateUser from "../components/User/UserCreate.component";
 import Dialog from "@mui/material/Dialog";
 import ENDPOINTS from "../services/endpoints";
 import axios from "axios";
@@ -12,15 +12,15 @@ import ServerUnavailableError from "../errors/services/ServerUnavailableError.co
 import { DialogContent } from "@mui/material";
 import Loading from "../components/Loading.component";
 import Alert from "@mui/material/Alert";
-import UserList from "../components/UserList.component";
-import UserEdit from "../components/UserEdit.component";
+import UserList from "../components/User/UserList.component";
+import UserEdit from "../components/User/UserEdit.component";
 import EqualFieldsError from "../errors/components/EqualFieldsError.component";
-import UserView from "../components/UserView.component";
+import UserView from "../components/User/UserView.component";
 
 const UserPage = () => {
   useEffect(() => {
     handleUpdateUserList();
-  }, []);
+  });
 
   const [view, setView] = useState("list"); // Pode ser 'list', 'create', 'update', 'view'
   const [selectedUser, setSelectedUser] = useState(null);

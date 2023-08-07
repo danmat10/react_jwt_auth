@@ -11,7 +11,12 @@ import {
 const UserDelete = ({ user, handleDelete, handleClose }) => {
   return (
     <>
-      <DialogTitle>Excluir Usuário</DialogTitle>
+      <DialogTitle
+        style={{ backgroundColor: "#e57373", color: "white" }}
+        paragraph
+      >
+        Excluir Usuário
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
           Você está prestes a excluir um usuário. Esta ação é irreversível e

@@ -9,7 +9,12 @@ import {
 const UserView = ({ user }) => {
   return (
     <>
-      <DialogTitle>Visualizar Usuário</DialogTitle>
+      <DialogTitle
+        style={{ backgroundColor: "#0d6efd", color: "white" }}
+        paragraph
+      >
+        Visualizar Usuário
+      </DialogTitle>
 
       <DialogContent>
         <DialogContentText marginBottom={2}>

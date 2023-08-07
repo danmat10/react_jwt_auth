@@ -12,7 +12,7 @@ const CreateUser = ({ onCreate }) => {
       registration: "",
       cpf: "",
       email: "",
-      permissions : "",
+      permissions: "",
     },
     validateUserCreateForm,
     onSubmit: (values) => {
@@ -23,7 +23,12 @@ const CreateUser = ({ onCreate }) => {
 
   return (
     <>
-      <DialogTitle>Criar Usuário</DialogTitle>
+      <DialogTitle
+        style={{ backgroundColor: "#0d6efd", color: "white" }}
+        paragraph
+      >
+        Criar Usuário
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
           Você está na janela de criação de novo usuário. Preencha os campos com

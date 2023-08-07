@@ -22,7 +22,12 @@ const UserEdit = ({ user, onUpdate, setErrorType }) => {
 
   return (
     <>
-      <DialogTitle>Editar Usuário</DialogTitle>
+      <DialogTitle
+        style={{ backgroundColor: "#0d6efd", color: "white" }}
+        paragraph
+      >
+        Editar Usuário
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
           Você está na janela de edição de usuário. Por favor, atualize as

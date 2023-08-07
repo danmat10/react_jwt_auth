@@ -5,7 +5,7 @@ import UserFormFields from "./UserFormFields.component";
 import { validateUserEditForm } from "./UserValidations";
 import { DialogTitle, DialogContentText, DialogContent } from "@mui/material";
 
-const UserEdit = ({ user, onUpdate, setErrorType }) => {
+const UserEdit = ({ user, onUpdate }) => {
   const formik = useFormik({
     initialValues: {
       name: user.name || "",
@@ -14,7 +14,7 @@ const UserEdit = ({ user, onUpdate, setErrorType }) => {
       registration: user.registration || "",
       permissions: user.permissions || "",
     },
-    validate: (values) => validateUserEditForm(values, user, setErrorType),
+    validate: (values) => validateUserEditForm(values, user),
     onSubmit: (values) => {
       onUpdate(values);
     },

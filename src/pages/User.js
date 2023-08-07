@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Container, Grid, Fab } from "@mui/material";
-import axios from "axios";
 import { useAuthHeader } from "react-auth-kit";
 import AddIcon from "@mui/icons-material/Add";
 import Dialog from "@mui/material/Dialog";
-import Alert from "@mui/material/Alert";
+import LinearProgress from "@mui/material/LinearProgress";
 import UserList from "../components/User/UserList.component";
 import UserEdit from "../components/User/UserEdit.component";
-import EqualFieldsError from "../errors/components/EqualFieldsError.component";
 import UserView from "../components/User/UserView.component";
 import UserDelete from "../components/User/UserDelete.component";
 import Header from "../components/Header.component";
 import CreateUser from "../components/User/UserCreate.component";
 import ENDPOINTS from "../services/endpoints";
-import UnauthorizedError from "../errors/services/UnauthorizedError.component";
-import ServerUnavailableError from "../errors/services/ServerUnavailableError.component";
-import Loading from "../components/Loading.component";
 import { apiCall, handleErrorResponse } from "../services/apiHelper";
-import MessageDialog from "../errors/components/MessageDialog.component";
+import SnackBarError from "../errors/components/SnackBarError.component";
+import SnackBarSuccess from "../errors/components/SnackBarSuccess.component";
 
 const UserPage = () => {
   useEffect(() => {
@@ -27,13 +23,13 @@ const UserPage = () => {
   const [view, setView] = useState("list"); // Pode ser 'list', 'create', 'update', 'view', delete
   const [selectedUser, setSelectedUser] = useState(null);
   const [open, setOpen] = React.useState(false);
-  const [errorType, setErrorType] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [sucess, setSucess] = useState(false);
   const [users, setUsers] = useState([]);
+  const [openSnackBarError, setOpenSnackBarError] = useState(false);
+  const [openSnackBarSuccess, setOpenSnackBarSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({
-    type: null,
-    content: null,
+    type: "",
+    content: "",
   });
 
   const authHeader = useAuthHeader();
@@ -41,17 +37,26 @@ const UserPage = () => {
     Authorization: `${authHeader()}`,
   };
 
-  const handleMessages = () => {
-    setErrorType(null);
-    setSucess(false);
-    setIsLoading(false);
+  const handleOpen = () => setOpen(true);
+
+  const handleCloseSnackbarError = () => {
+    setOpenSnackBarError(false);
   };
 
-  const handleOpen = () => setOpen(true);
+  const handleOpenSnackBarError = () => {
+    setOpenSnackBarError(true);
+  };
+
+  const handleCloseSnackbarSuccess = () => {
+    setOpenSnackBarSuccess(false);
+  };
+
+  const handleOpenSnackBarSuccess = () => {
+    setOpenSnackBarSuccess(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
-    handleMessages();
     setView("list");
   };
 
@@ -69,7 +74,6 @@ const UserPage = () => {
 
   const handleOpenCreateForm = () => {
     setView("create");
-    setErrorType(null);
     handleOpen();
   };
 
@@ -88,20 +92,19 @@ const UserPage = () => {
     successMessage
   ) => {
     try {
-      setMessage({ type: "loading", content: "Carregando..." });
+      setIsLoading(true);
       const response = await apiCall(method, endpoint, data, headers);
       if (onSucess) {
         onSucess(response);
       }
       if (successMessage) {
         setMessage({ type: "success", content: successMessage });
-      } else {
-        setMessage(null);
+        handleOpenSnackBarSuccess();
       }
     } catch (error) {
-      handleErrorResponse(error, (type, errorMessage) => {
-        setMessage({ type: type, content: errorMessage });
-      });
+      handleErrorResponse(error, handleOpenSnackBarError, setMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -114,6 +117,7 @@ const UserPage = () => {
       "",
       "Usuário criado com sucesso!"
     );
+    handleUpdateUserList();
   };
 
   const handleUpdateUserList = () => {
@@ -129,6 +133,7 @@ const UserPage = () => {
       "",
       "Usuário atualizado com sucesso!"
     );
+    handleUpdateUserList();
   };
 
   const handleDelete = (user) => {
@@ -136,8 +141,12 @@ const UserPage = () => {
       "delete",
       ENDPOINTS.USER.DELETE + selectedUser.id,
       {},
-      headers
+      headers,
+      "",
+      "Usuário deletado com sucesso!"
     );
+    handleClose();
+    handleUpdateUserList();
   };
 
   return (
@@ -162,29 +171,15 @@ const UserPage = () => {
           <AddIcon />
         </Fab>
       </Container>
-
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        {sucess && (
-          <Alert severity="success" variant="filled">
-            Solicitação feita com sucesso!
-          </Alert>
-        )}
-        {isLoading && <Loading />}
-        {errorType === "unauthorized" && <UnauthorizedError />}
-        {errorType === "serverUnavailable" && <ServerUnavailableError />}
-        {errorType === "equalFields" && <EqualFieldsError />}
         {view === "create" && <CreateUser onCreate={handleCreateUser} />}
         {view === "update" && (
-          <UserEdit
-            user={selectedUser}
-            onUpdate={handleEditUser}
-            setErrorType={setErrorType}
-          />
+          <UserEdit user={selectedUser} onUpdate={handleEditUser} />
         )}
         {view === "delete" && (
           <UserDelete
@@ -193,8 +188,19 @@ const UserPage = () => {
             handleClose={handleClose}
           />
         )}
+        {isLoading === true && <LinearProgress />}
         {view === "view" && <UserView user={selectedUser} />}
       </Dialog>
+      <SnackBarError
+        open={openSnackBarError}
+        onClose={handleCloseSnackbarError}
+        message={message}
+      />
+      <SnackBarSuccess
+        open={openSnackBarSuccess}
+        onClose={handleCloseSnackbarSuccess}
+        message={message}
+      />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  FormHelperText,
 } from "@mui/material";
 const UserFormFields = ({ formik }) => (
   <>
@@ -60,6 +61,7 @@ const UserFormFields = ({ formik }) => (
     />
     <FormControl component="fieldset" margin="dense">
       <FormLabel component="legend">Permissões</FormLabel>
+
       <RadioGroup
         row
         aria-label="permissions"
@@ -73,6 +75,9 @@ const UserFormFields = ({ formik }) => (
           control={<Radio />}
           label="Requisitante"
         />
+        {formik.touched.permissions && formik.errors.permissions && (
+          <FormHelperText error>{formik.errors.permissions}</FormHelperText>
+        )}
       </RadioGroup>
     </FormControl>
   </>

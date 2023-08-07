@@ -38,8 +38,8 @@ const validateUserCreateForm = (values) => {
   return errors;
 };
 
-const validateUserEditForm = (values, user, setErrorType) => {
-  const errors = validateUserCreateForm(values); // Reaproveitando a validação anterior
+const validateUserEditForm = (values, user) => {
+  const errors = validateUserCreateForm(values);
 
   if (
     values.name === user.name &&
@@ -48,8 +48,11 @@ const validateUserEditForm = (values, user, setErrorType) => {
     values.registration === user.registration &&
     values.permissions === user.permissions
   ) {
-    errors._errors = "equalFields";
-    setErrorType("equalFields");
+    errors.name = "Nenhuma alteração foi feita";
+    errors.email = "Nenhuma alteração foi feita";
+    errors.cpf = "Nenhuma alteração foi feita";
+    errors.registration = "Nenhuma alteração foi feita";
+    errors.permissions = "Nenhuma alteração foi feita";
   }
 
   return errors;

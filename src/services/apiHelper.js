@@ -23,23 +23,23 @@ const apiCall = async (method, endpoint, data = null, headers = {}) => {
  * @param {Object} error - O erro retornado pelo Axios.
  * @param {Function} setErrorType - Uma função setState para definir o tipo de erro.
  */
-const handleErrorResponse = (error, setErrorType) => {
-  // Se o erro tem uma resposta e é um erro 401 ou 403, então é não autorizado.
+const handleErrorResponse = (error, handleOpen, setMessage) => {
   if (
     error.response &&
     (error.response.status === 401 || error.response.status === 403)
   ) {
-    setErrorType("unauthorized");
+    setMessage({
+      type: "error",
+      content: "Você não está autorizado. Por favor, faça login novamente.",
+    });
+    handleOpen();
+  } else {
+    setMessage({
+      type: "error",
+      content: "O servidor está indisponível. Tente novamente mais tarde.",
+    });
+    handleOpen();
   }
-  // Se o erro tem uma solicitação mas nenhuma resposta, então o servidor não está disponível.
-  else if (error.request) {
-    setErrorType("serverUnavailable");
-  }
-  // Aqui você pode adicionar outros tipos de erros conforme necessário.
-  // ...
-
-  // Finalmente, imprime o erro no console para fins de debug.
-  console.error(error);
 };
 
 export { handleErrorResponse, apiCall };

@@ -10,6 +10,9 @@ const UserEdit = ({ user, onUpdate, setErrorType }) => {
     initialValues: {
       name: user.name || "",
       email: user.email || "",
+      cpf: user.cpf || "",
+      registration: user.registration || "",
+      permissions: user.permissions || "",
     },
     validate: (values) => validateUserEditForm(values, user, setErrorType),
     onSubmit: (values) => {

@@ -1,9 +1,6 @@
 import React from "react";
 import {
   Typography,
-  Grid,
-  Paper,
-  Box,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -19,6 +16,7 @@ const UserView = ({ user }) => {
           Você está visualizando os detalhes do usuário. Aqui estão todas as
           informações associadas a esse usuário.
         </DialogContentText>
+
         <Typography variant="subtitle1" align="center">
           Nome
         </Typography>
@@ -30,11 +28,57 @@ const UserView = ({ user }) => {
         >
           {user.name}
         </Typography>
+
+        <Typography variant="subtitle1" align="center">
+          Matricula
+        </Typography>
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          align="center"
+          paragraph
+        >
+          {user.registration}
+        </Typography>
+
+        <Typography variant="subtitle1" align="center">
+          CPF
+        </Typography>
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          align="center"
+          paragraph
+        >
+          {user.cpf}
+        </Typography>
+
         <Typography variant="subtitle1" align="center">
           E-mail
         </Typography>
-        <Typography variant="body1" color="textSecondary" align="center">
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          align="center"
+          paragraph
+        >
           {user.email}
+        </Typography>
+
+        <Typography variant="subtitle1" align="center">
+          Permissões
+        </Typography>
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          align="center"
+          paragraph
+        >
+          {user.permissions === "gestor"
+            ? "Gestor"
+            : user.permissions === "requisitante"
+            ? "Requisitante"
+            : ""}
         </Typography>
       </DialogContent>
     </>

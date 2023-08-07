@@ -9,7 +9,10 @@ const CreateUser = ({ onCreate }) => {
   const formik = useFormik({
     initialValues: {
       name: "",
+      registration: "",
+      cpf: "",
       email: "",
+      permissions : "",
     },
     validateUserCreateForm,
     onSubmit: (values) => {

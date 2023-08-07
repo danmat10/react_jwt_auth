@@ -14,7 +14,7 @@ const CreateUser = ({ onCreate }) => {
       email: "",
       permissions: "",
     },
-    validateUserCreateForm,
+    validate: (values) => validateUserCreateForm(values),
     onSubmit: (values) => {
       onCreate(values);
       formik.resetForm();

@@ -9,6 +9,7 @@ const ENDPOINTS = {
     POST: BASEURL + "/db/users",
     GET: BASEURL + "/db/users",
     PATCH: BASEURL + "/db/users/",
+    DELETE: BASEURL + "/db/users/",
   },
 };
 

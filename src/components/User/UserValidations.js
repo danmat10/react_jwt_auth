@@ -22,6 +22,14 @@ const validateUserCreateForm = (values) => {
     errors.email = "Endereço de e-mail inválido";
   }
 
+  if (!values.registration) {
+    errors.registration = "Obrigatório";
+  }
+
+  if (!values.permissions) {
+    errors.permissions = "Obrigatório";
+  }
+
   const cpfError = validateCPF(values.cpf);
   if (cpfError) {
     errors.cpf = cpfError;

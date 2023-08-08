@@ -20,6 +20,14 @@ const MESSAGES = {
       show: true,
     },
   },
+  AUTH: {
+    LOGIN: {
+      pending: "Autenticando usuário...",
+      success: "Usuário autenticado com sucesso!",
+      error: "Oops, não foi possível autenticar o usuário.",
+      show: true,
+    },
+  },
 };
 
 export default MESSAGES;

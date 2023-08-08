@@ -11,9 +11,8 @@ import {
   UserCreate,
 } from "../components/User";
 import Header from "../components/Header.component";
-import ENDPOINTS from "../services/endpoints";
-import { apiCall } from "../services/apiHelper";
-import MESSAGES from "../config/messages";
+import { apiCall, ENDPOINTS } from "../services";
+import { MESSAGES } from "../config";
 
 const UserPage = () => {
   useEffect(() => handleUpdateUserList(), []);

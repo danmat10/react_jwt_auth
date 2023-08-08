@@ -36,7 +36,9 @@ const apiCall = async (
       })
       .then((response) => response.data)
       .catch((error) => {
-        toast.error(error.message);
+        if (!toastConfig.show) {
+          toast.error(error.message);
+        }
       });
   } else {
     try {

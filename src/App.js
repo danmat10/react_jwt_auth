@@ -13,16 +13,14 @@ import "./App.css";
 import refreshApi from "./contexts/refreshApi";
 import User from "./pages/User";
 
-const PrivateRoute = ({ Component }) => {
+const ConditionalRoute = ({ Component, redirectTo, inverse = false }) => {
   const isAuthenticated = useIsAuthenticated();
   const auth = isAuthenticated();
-  return auth ? <Component /> : <Navigate to="/login" />;
-};
-
-const LoginRoute = ({ Component }) => {
-  const isAuthenticated = useIsAuthenticated();
-  const auth = isAuthenticated();
-  return auth ? <Navigate to="/" /> : <Component />;
+  if (inverse ? !auth : auth) {
+    return <Component />;
+  } else {
+    return <Navigate to={redirectTo} />;
+  }
 };
 
 class App extends React.Component {
@@ -44,16 +42,30 @@ class App extends React.Component {
       >
         <Router>
           <Routes>
-            <Route exact path="/" element={<PrivateRoute Component={Home} />} />
+            <Route
+              exact
+              path="/"
+              element={
+                <ConditionalRoute Component={Home} redirectTo="/login" />
+              }
+            />
             <Route
               exact
               path="/users"
-              element={<PrivateRoute Component={User} />}
+              element={
+                <ConditionalRoute Component={User} redirectTo="/login" />
+              }
             />
             <Route
               exact
               path="/login"
-              element={<LoginRoute Component={Login} />}
+              element={
+                <ConditionalRoute
+                  Component={Login}
+                  redirectTo="/"
+                  inverse={true}
+                />
+              }
             />
           </Routes>
         </Router>

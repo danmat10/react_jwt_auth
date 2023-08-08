@@ -10,7 +10,7 @@ import {
 import { AuthProvider } from "react-auth-kit";
 import { useIsAuthenticated } from "react-auth-kit";
 import "./App.css";
-import refreshApi from "./contexts/refreshApi";
+import refreshApi from "./services/refreshApi";
 import User from "./pages/User";
 
 

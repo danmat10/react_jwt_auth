@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuthHeader } from "react-auth-kit";
-import { Container, Grid, Fab } from "@mui/material";
+import { Container, Fab, Typography, Grid } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import AddIcon from "@mui/icons-material/Add";
 import {
@@ -10,7 +10,7 @@ import {
   UserDelete,
   UserCreate,
 } from "../components/User";
-import Header from "../components/Header.component";
+import { Header } from "../components/Header";
 import { apiCall, ENDPOINTS } from "../services";
 import { MESSAGES } from "../config";
 
@@ -112,7 +112,12 @@ const UserPage = () => {
     <div>
       <Header />
       <Container>
-        <Grid container>{views.list}</Grid>
+        <Grid container spacing={3}>
+          <Grid item lg={12}>
+            <Typography variant="h4">User Management</Typography>
+          </Grid>
+          {views.list}
+        </Grid>
         <Fab
           color="primary"
           aria-label="add"

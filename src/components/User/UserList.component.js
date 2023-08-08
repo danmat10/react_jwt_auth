@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Box, TextField } from "@mui/material";
+import { Grid, TextField, Select, MenuItem, IconButton } from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import { DataGrid } from "@mui/x-data-grid";
 import ViewIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
@@ -7,20 +8,19 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 const UserList = ({ users, openDialog }) => {
   const [search, setSearch] = useState("");
+  const [selectedColumn, setSelectedColumn] = useState("name");
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.name.toLowerCase().includes(search.toLowerCase()) ||
-      user.email.toLowerCase().includes(search.toLowerCase())
+  const filteredUsers = users.filter((user) =>
+    user[selectedColumn]?.toLowerCase().includes(search.toLowerCase())
   );
 
   const columns = [
-    { field: "name", headerName: "Nome", width: 150 },
-    { field: "email", headerName: "E-mail", width: 200 },
+    { field: "name", headerName: "Nome", flex: 2 },
+    { field: "email", headerName: "E-mail", flex: 1 },
     {
       field: "actions",
       headerName: "Ações",
-      width: 150,
+      flex: 1,
       renderCell: (params) => (
         <>
           <ViewIcon
@@ -47,8 +47,8 @@ const UserList = ({ users, openDialog }) => {
   ];
 
   return (
-    <Box>
-      <Box marginTop={2}>
+    <>
+      <Grid item xs={6} md={4} lg={4}>
         <TextField
           fullWidth
           variant="outlined"
@@ -56,9 +56,26 @@ const UserList = ({ users, openDialog }) => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-      </Box>
-      <Box sx={{ height: 500, width: "100%" }}>
+      </Grid>
+      <Grid item xs={4} md={4} lg={4}>
+        <Select
+          fullWidth
+          variant="outlined"
+          value={selectedColumn}
+          onChange={(e) => setSelectedColumn(e.target.value)}
+        >
+          <MenuItem value="name">Nome</MenuItem>
+          <MenuItem value="email">E-mail</MenuItem>
+        </Select>
+      </Grid>
+      <Grid item xs={2} md={2} lg={2}>
+        <IconButton>
+          <FilterListIcon />
+        </IconButton>
+      </Grid>
+      <Grid item xs={12} md={12} lg={12}>
         <DataGrid
+          sx={{ height: 500 }}
           rows={filteredUsers}
           columns={columns}
           autoPageSize
@@ -66,8 +83,8 @@ const UserList = ({ users, openDialog }) => {
           checkboxSelection={false}
           disableSelectionOnClick
         />
-      </Box>
-    </Box>
+      </Grid>
+    </>
   );
 };
 

@@ -15,7 +15,7 @@ const SECRET_KEY = "my-secret-key";
 
 // Login endpoint
 server.post("/auth/login", (req, res) => {
-  const { email, password } = req.body;
+  const { login, password } = req.body;
 
   fs.readFile("users.json", (err, data) => {
     if (err) throw err;
@@ -23,14 +23,14 @@ server.post("/auth/login", (req, res) => {
     const usersData = JSON.parse(data);
     const users = usersData.users;
     const user = users.find(
-      (u) => u.email === email && u.password === password
+      (u) => u.login === login && u.password === password
     );
 
     if (user) {
-      const access_token = jwt.sign({ email, role: user.role }, SECRET_KEY, {
+      const access_token = jwt.sign({ login, role: user.role }, SECRET_KEY, {
         expiresIn: "5min",
       });
-      const refresh_token = jwt.sign({ email, role: user.role }, SECRET_KEY);
+      const refresh_token = jwt.sign({ login, role: user.role }, SECRET_KEY);
       res.json({ access_token, refresh_token });
     } else {
       res.sendStatus(401);

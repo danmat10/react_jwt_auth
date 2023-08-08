@@ -60,7 +60,6 @@ const UserPage = () => {
         }));
         toggleSnackBar("openSnackBarSuccess", true);
       }
-
       return response;
     } catch (error) {
       handleErrorResponse(
@@ -94,11 +93,11 @@ const UserPage = () => {
   };
 
   const handleUpdateUserList = async () => {
-    const users = await handleApiCall({
+    let users = await handleApiCall({
       method: "get",
       endpoint: ENDPOINTS.USER.GET,
     });
-    if (!users) return;
+    if (!users) users = [];
     setState((prev) => ({ ...prev, users }));
   };
 
@@ -107,6 +106,7 @@ const UserPage = () => {
       { method: "delete", endpoint: ENDPOINTS.USER.DELETE + user.id },
       "Usuário excluído com sucesso!"
     );
+    closeDialog();
     handleUpdateUserList();
   };
 
@@ -116,7 +116,11 @@ const UserPage = () => {
     update: <UserEdit user={state.selectedUser} onUpdate={handleEditUser} />,
     view: <UserView user={state.selectedUser} />,
     delete: (
-      <UserDelete user={state.selectedUser} onDelete={handleDeleteUser} />
+      <UserDelete
+        user={state.selectedUser}
+        handleDelete={handleDeleteUser}
+        handleClose={closeDialog}
+      />
     ),
   };
 

@@ -1,17 +1,21 @@
 import axios from "axios";
-
 const apiCall = async (method, endpoint, data = null, headers = {}) => {
   const defaultHeaders = {
     "Content-Type": "application/json",
   };
-  try {
-    const response = await axios({
-      method,
-      url: endpoint,
-      data,
-      headers: { ...defaultHeaders, ...headers },
-    });
 
+  const config = {
+    method,
+    url: endpoint,
+    headers: { ...defaultHeaders, ...headers },
+  };
+
+  if (data !== null) {
+    config.data = data;
+  }
+
+  try {
+    const response = await axios(config);
     return response.data; // Retornando apenas os dados para simplificar.
   } catch (error) {
     throw error; // Rejete a Promise com o erro capturado para que possa ser tratado posteriormente.

@@ -16,6 +16,7 @@ const UserEdit = ({ user, onUpdate }) => {
     },
     validate: (values) => validateUserEditForm(values, user),
     onSubmit: (values) => {
+      values.id = user.id;
       onUpdate(values);
     },
   });

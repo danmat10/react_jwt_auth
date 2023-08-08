@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 
-const UserDelete = ({ user, handleDelete, handleClose }) => {
+const UserDelete = ({ user, onDelete, onClose }) => {
   return (
     <>
       <DialogTitle
@@ -28,10 +28,10 @@ const UserDelete = ({ user, handleDelete, handleClose }) => {
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={onClose} color="primary">
           Cancelar
         </Button>
-        <Button onClick={handleDelete} color="secondary">
+        <Button onClick={() => onDelete(user)} color="secondary">
           Excluir
         </Button>
       </DialogActions>

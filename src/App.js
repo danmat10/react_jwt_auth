@@ -1,6 +1,4 @@
 import React from "react";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
 import {
   BrowserRouter as Router,
   Route,
@@ -10,9 +8,8 @@ import {
 import { AuthProvider } from "react-auth-kit";
 import { useIsAuthenticated } from "react-auth-kit";
 import "./App.css";
-import refreshApi from "./services/refreshApi";
-import User from "./pages/User";
-
+import { refreshApi } from "./services";
+import { User, Home, Login } from "./pages";
 
 const ConditionalRoute = ({ Component, redirectTo, inverse = false }) => {
   const isAuthenticated = useIsAuthenticated();

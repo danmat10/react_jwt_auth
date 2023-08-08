@@ -1,205 +1,153 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Fab } from "@mui/material";
 import { useAuthHeader } from "react-auth-kit";
-import AddIcon from "@mui/icons-material/Add";
+import { Container, Grid, Fab } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import LinearProgress from "@mui/material/LinearProgress";
-import UserList from "../components/User/UserList.component";
-import UserEdit from "../components/User/UserEdit.component";
-import UserView from "../components/User/UserView.component";
-import UserDelete from "../components/User/UserDelete.component";
+import AddIcon from "@mui/icons-material/Add";
+import { UserList, UserEdit, UserView, UserDelete } from "../components/User";
 import Header from "../components/Header.component";
 import CreateUser from "../components/User/UserCreate.component";
-import ENDPOINTS from "../services/endpoints";
-import { apiCall, handleErrorResponse } from "../services/apiHelper";
 import SnackBarError from "../errors/components/SnackBarError.component";
 import SnackBarSuccess from "../errors/components/SnackBarSuccess.component";
+import ENDPOINTS from "../services/endpoints";
+import { apiCall, handleErrorResponse } from "../services/apiHelper";
 
 const UserPage = () => {
-  useEffect(() => {
-    handleUpdateUserList();
-  }, []);
+  useEffect(() => handleUpdateUserList(), []);
+  const authHeader = useAuthHeader();
 
-  const [view, setView] = useState("list"); // Pode ser 'list', 'create', 'update', 'view', delete
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [open, setOpen] = React.useState(false);
-  const [users, setUsers] = useState([]);
-  const [openSnackBarError, setOpenSnackBarError] = useState(false);
-  const [openSnackBarSuccess, setOpenSnackBarSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState({
-    type: "",
-    content: "",
+  const [state, setState] = useState({
+    view: "",
+    selectedUser: null,
+    openDialog: false,
+    users: [],
+    openSnackBarError: false,
+    openSnackBarSuccess: false,
+    isLoading: false,
+    message: { type: "", content: "" },
   });
 
-  const authHeader = useAuthHeader();
-  const headers = {
-    Authorization: `${authHeader()}`,
+  const toggleSnackBar = (type, open) => {
+    setState((prev) => ({ ...prev, [type]: open }));
   };
 
-  const handleOpen = () => setOpen(true);
-
-  const handleCloseSnackbarError = () => {
-    setOpenSnackBarError(false);
+  const openDialog = (view, user = null) => {
+    setState((prev) => ({
+      ...prev,
+      view,
+      openDialog: true,
+      selectedUser: user,
+    }));
   };
 
-  const handleOpenSnackBarError = () => {
-    setOpenSnackBarError(true);
+  const closeDialog = () => {
+    setState((prev) => ({ ...prev, view: "", openDialog: false }));
   };
 
-  const handleCloseSnackbarSuccess = () => {
-    setOpenSnackBarSuccess(false);
-  };
+  const handleApiCall = async (config, successMessage = "") => {
+    const { method, endpoint, data } = config;
 
-  const handleOpenSnackBarSuccess = () => {
-    setOpenSnackBarSuccess(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setView("list");
-  };
-
-  const handleOpenDeleteForm = (user) => {
-    setView("delete");
-    setOpen(true);
-    setSelectedUser(user);
-  };
-
-  const handleOpenViewForm = (user) => {
-    setView("view");
-    setOpen(true);
-    setSelectedUser(user);
-  };
-
-  const handleOpenCreateForm = () => {
-    setView("create");
-    handleOpen();
-  };
-
-  const handleOpenEditForm = (user) => {
-    setView("update");
-    setSelectedUser(user);
-    handleOpen();
-  };
-
-  const handleApiCall = async (
-    method,
-    endpoint,
-    data,
-    headers,
-    onSucess,
-    successMessage
-  ) => {
     try {
-      setIsLoading(true);
-      const response = await apiCall(method, endpoint, data, headers);
-      if (onSucess) {
-        onSucess(response);
-      }
+      setState((prev) => ({ ...prev, isLoading: true }));
+      const response = await apiCall(method, endpoint, data, {
+        Authorization: authHeader(),
+      });
+
       if (successMessage) {
-        setMessage({ type: "success", content: successMessage });
-        handleOpenSnackBarSuccess();
+        setState((prev) => ({
+          ...prev,
+          message: { type: "success", content: successMessage },
+        }));
+        toggleSnackBar("openSnackBarSuccess", true);
       }
+
+      return response;
     } catch (error) {
-      handleErrorResponse(error, handleOpenSnackBarError, setMessage);
+      handleErrorResponse(
+        error,
+        () => toggleSnackBar("openSnackBarError", true),
+        (message) => setState((prev) => ({ ...prev, message }))
+      );
     } finally {
-      setIsLoading(false);
+      setState((prev) => ({ ...prev, isLoading: false }));
     }
   };
 
-  const handleCreateUser = (user) => {
-    handleApiCall(
-      "post",
-      ENDPOINTS.USER.POST,
-      user,
-      headers,
-      "",
+  const handleCreateUser = async (user) => {
+    await handleApiCall(
+      { method: "post", endpoint: ENDPOINTS.USER.POST, data: user },
       "Usuário criado com sucesso!"
     );
     handleUpdateUserList();
   };
 
-  const handleUpdateUserList = () => {
-    handleApiCall("get", ENDPOINTS.USER.GET, null, headers, setUsers);
-  };
-
-  const handleEditUser = (user) => {
-    handleApiCall(
-      "patch",
-      ENDPOINTS.USER.PATCH + selectedUser.id,
-      user,
-      headers,
-      "",
+  const handleEditUser = async (user) => {
+    await handleApiCall(
+      {
+        method: "patch",
+        endpoint: ENDPOINTS.USER.PATCH + user.id,
+        data: user,
+      },
       "Usuário atualizado com sucesso!"
     );
     handleUpdateUserList();
   };
 
-  const handleDelete = (user) => {
-    handleApiCall(
-      "delete",
-      ENDPOINTS.USER.DELETE + selectedUser.id,
-      {},
-      headers,
-      "",
-      "Usuário deletado com sucesso!"
+  const handleUpdateUserList = async () => {
+    const users = await handleApiCall({
+      method: "get",
+      endpoint: ENDPOINTS.USER.GET,
+    });
+    if (!users) return;
+    setState((prev) => ({ ...prev, users }));
+  };
+
+  const handleDeleteUser = async (user) => {
+    await handleApiCall(
+      { method: "delete", endpoint: ENDPOINTS.USER.DELETE + user.id },
+      "Usuário excluído com sucesso!"
     );
-    handleClose();
     handleUpdateUserList();
+  };
+
+  const views = {
+    list: <UserList users={state.users} openDialog={openDialog} />,
+    create: <CreateUser onCreate={handleCreateUser} />,
+    update: <UserEdit user={state.selectedUser} onUpdate={handleEditUser} />,
+    view: <UserView user={state.selectedUser} />,
+    delete: (
+      <UserDelete user={state.selectedUser} onDelete={handleDeleteUser} />
+    ),
   };
 
   return (
     <div>
       <Header />
       <Container>
-        <Grid container>
-          <UserList
-            users={users}
-            onEdit={handleOpenEditForm}
-            onDelete={handleOpenDeleteForm}
-            onView={handleOpenViewForm}
-          />
-        </Grid>
+        <Grid container>{views.list}</Grid>
         <Fab
           color="primary"
           aria-label="add"
-          onClick={handleOpenCreateForm}
+          onClick={() => openDialog("create")}
           style={{ position: "fixed", bottom: 20, right: 20 }}
           title="Adicionar usuário"
         >
           <AddIcon />
         </Fab>
       </Container>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        {view === "create" && <CreateUser onCreate={handleCreateUser} />}
-        {view === "update" && (
-          <UserEdit user={selectedUser} onUpdate={handleEditUser} />
-        )}
-        {view === "delete" && (
-          <UserDelete
-            user={selectedUser}
-            handleDelete={handleDelete}
-            handleClose={handleClose}
-          />
-        )}
-        {isLoading === true && <LinearProgress />}
-        {view === "view" && <UserView user={selectedUser} />}
+      <Dialog open={state.openDialog} onClose={closeDialog}>
+        {views[state.view]}
+        {state.isLoading && <LinearProgress />}
       </Dialog>
       <SnackBarError
-        open={openSnackBarError}
-        onClose={handleCloseSnackbarError}
-        message={message}
+        open={state.openSnackBarError}
+        onClose={() => toggleSnackBar("openSnackBarError", false)}
+        message={state.message}
       />
       <SnackBarSuccess
-        open={openSnackBarSuccess}
-        onClose={handleCloseSnackbarSuccess}
-        message={message}
+        open={state.openSnackBarSuccess}
+        onClose={() => toggleSnackBar("openSnackBarSuccess", false)}
+        message={state.message}
       />
     </div>
   );

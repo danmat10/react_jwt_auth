@@ -5,7 +5,7 @@ import ViewIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const UserList = ({ users, onEdit, onDelete, onView }) => {
+const UserList = ({ users, openDialog }) => {
   const [search, setSearch] = useState("");
 
   const filteredUsers = users.filter(
@@ -25,19 +25,19 @@ const UserList = ({ users, onEdit, onDelete, onView }) => {
         <>
           <ViewIcon
             color="primary"
-            onClick={() => onView(params.row)}
+            onClick={() => openDialog("view", params.row)}
             style={{ cursor: "pointer" }}
             titleAccess="Visualizar"
           />
           <EditIcon
             color="primary"
-            onClick={() => onEdit(params.row)}
+            onClick={() => openDialog("update", params.row)}
             style={{ cursor: "pointer" }}
             titleAccess="Editar"
           />
           <DeleteIcon
             color="secondary"
-            onClick={() => onDelete(params.row)}
+            onClick={() => openDialog("delete", params.row)}
             style={{ cursor: "pointer" }}
             titleAccess="Excluir"
           />

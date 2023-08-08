@@ -1,69 +1,13 @@
 {
-  "posts": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
-  "profile": {
-    "name": "typicode"
-  },
   "users": [
     {
-      "email": "user@user.com",
+      "login": "user",
       "name": "Daniel",
-      "id": 8,
+      "id": 1,
       "cpf": "09022766977",
       "registration": "432360-2",
-      "permissions": "gestor"
-    },
-    {
-      "email": "user@user.com",
-      "name": "Administrador",
-      "id": 9
-    },
-    {
-      "email": "user@user.com",
-      "name": "Administrador",
-      "id": 10
-    },
-    {
-      "email": "user@user.com",
-      "name": "Administrador",
-      "id": 11
-    },
-    {
-      "email": "user@user.com",
-      "name": "Administrador",
-      "id": 13
-    },
-    {
-      "email": "teste@t.com",
-      "name": "Teste",
-      "id": 14
-    },
-    {
-      "email": "user@user.com",
-      "name": "admin",
-      "id": 15
-    },
-    {
-      "email": "john@mail.com",
-      "name": "admin",
-      "id": 16
-    },
-    {
-      "name": "Admin",
-      "email": "carolainelimab@gmail.com",
-      "id": 17
+      "permissions": "gestor",
+      "password": "user"
     }
   ]
 }

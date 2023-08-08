@@ -5,7 +5,6 @@ const express = require("express");
 
 const server = jsonServer.create();
 const router = jsonServer.router("db.json");
-const userRouter = jsonServer.router("users.json");
 const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
@@ -17,7 +16,7 @@ const SECRET_KEY = "my-secret-key";
 server.post("/auth/login", (req, res) => {
   const { login, password } = req.body;
 
-  fs.readFile("users.json", (err, data) => {
+  fs.readFile("db.json", (err, data) => {
     if (err) throw err;
 
     const usersData = JSON.parse(data);
@@ -82,7 +81,7 @@ const validateJWT = (req, res, next) => {
 
 // Protege os endpoints de dados com o middleware JWT
 server.use("/db", validateJWT, router);
-server.use("/users", validateJWT, userRouter);
+server.use("/users", validateJWT, router);
 
 server.listen(3030, () => {
   console.log("JSON Server is running on port 3030");

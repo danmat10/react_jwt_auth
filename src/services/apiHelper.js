@@ -16,17 +16,12 @@ const apiCall = async (method, endpoint, data = null, headers = {}) => {
 
   try {
     const response = await axios(config);
-    return response.data; // Retornando apenas os dados para simplificar.
+    return response.data;
   } catch (error) {
-    throw error; // Rejete a Promise com o erro capturado para que possa ser tratado posteriormente.
+    throw error;
   }
 };
 
-/**
- * Trata a resposta de erro de uma chamada de API.
- * @param {Object} error - O erro retornado pelo Axios.
- * @param {Function} setErrorType - Uma função setState para definir o tipo de erro.
- */
 const handleErrorResponse = (error, handleOpen, setMessage) => {
   if (
     error.response &&

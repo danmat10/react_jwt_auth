@@ -4,9 +4,14 @@ import { Container, Grid, Fab } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import LinearProgress from "@mui/material/LinearProgress";
 import AddIcon from "@mui/icons-material/Add";
-import { UserList, UserEdit, UserView, UserDelete } from "../components/User";
+import {
+  UserList,
+  UserEdit,
+  UserView,
+  UserDelete,
+  UserCreate,
+} from "../components/User";
 import Header from "../components/Header.component";
-import CreateUser from "../components/User/UserCreate.component";
 import SnackBarError from "../errors/components/SnackBarError.component";
 import SnackBarSuccess from "../errors/components/SnackBarSuccess.component";
 import ENDPOINTS from "../services/endpoints";
@@ -112,14 +117,14 @@ const UserPage = () => {
 
   const views = {
     list: <UserList users={state.users} openDialog={openDialog} />,
-    create: <CreateUser onCreate={handleCreateUser} />,
+    create: <UserCreate onCreate={handleCreateUser} />,
     update: <UserEdit user={state.selectedUser} onUpdate={handleEditUser} />,
     view: <UserView user={state.selectedUser} />,
     delete: (
       <UserDelete
         user={state.selectedUser}
-        handleDelete={handleDeleteUser}
-        handleClose={closeDialog}
+        onDelete={handleDeleteUser}
+        onClose={closeDialog}
       />
     ),
   };

@@ -7,4 +7,4 @@ export { default as UserFormFields } from "./UserFormFields.component";
 export {
   validateUserCreateForm,
   validateUserEditForm,
-} from "./UserValidations";
+} from "../../validations/UserValidations";

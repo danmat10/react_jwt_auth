@@ -1,2 +1,2 @@
 export { default as LoginFormFields } from "./LoginFormFields.component";
-export { default as validateLoginForm } from "./LoginValidations";
+export { default as validateLoginForm } from "../../validations/LoginValidations";

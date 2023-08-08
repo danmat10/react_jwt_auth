@@ -15,7 +15,8 @@ import {
   REFRESH_TOKEN_EXPIRES_AT,
 } from "../config";
 import { apiCall, ENDPOINTS } from "../services";
-import { LoginFormFields, validateLoginForm } from "../components/Login";
+import { LoginFormFields } from "../components/Login";
+import { validateLoginForm } from "../validations";
 
 const Login = (props) => {
   const signIn = useSignIn();

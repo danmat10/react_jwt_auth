@@ -7,11 +7,12 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from "react-auth-kit";
 import { useIsAuthenticated } from "react-auth-kit";
+
 import "./App.css";
 import { refreshApi } from "./services";
 import { User, Home, Login } from "./pages";
 
-const ConditionalRoute = ({ Component, redirectTo, inverse = false }) => {
+const PrivateRoute = ({ Component, redirectTo, inverse = false }) => {
   const isAuthenticated = useIsAuthenticated();
   const auth = isAuthenticated();
   if (inverse ? !auth : auth) {
@@ -43,26 +44,18 @@ class App extends React.Component {
             <Route
               exact
               path="/"
-              element={
-                <ConditionalRoute Component={Home} redirectTo="/login" />
-              }
+              element={<PrivateRoute Component={Home} redirectTo="/login" />}
             />
             <Route
               exact
               path="/users"
-              element={
-                <ConditionalRoute Component={User} redirectTo="/login" />
-              }
+              element={<PrivateRoute Component={User} redirectTo="/login" />}
             />
             <Route
               exact
               path="/login"
               element={
-                <ConditionalRoute
-                  Component={Login}
-                  redirectTo="/"
-                  inverse={true}
-                />
+                <PrivateRoute Component={Login} redirectTo="/" inverse={true} />
               }
             />
           </Routes>

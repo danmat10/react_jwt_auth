@@ -2,20 +2,20 @@ import { useSignIn } from "react-auth-kit";
 import { useFormik } from "formik";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+
 import {
   MESSAGES,
   AUTH_TOKEN_EXPIRES_AT,
   REFRESH_TOKEN_EXPIRES_AT,
 } from "../config";
 import { apiCall, ENDPOINTS } from "../services";
-import { LoginFormFields } from "../components/Login";
-import validateLoginForm from "../components/Login/LoginValidations";
+import { LoginFormFields, validateLoginForm } from "../components/Login";
 
 const Login = (props) => {
   const signIn = useSignIn();

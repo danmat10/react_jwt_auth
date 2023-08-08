@@ -1,3 +1,3 @@
 export { default as refreshApi } from "./refreshApi";
 export { default as ENDPOINTS } from "./endpoints";
-export { apiCall } from "./apiHelper";
+export { default as apiCall } from "./apiCall";

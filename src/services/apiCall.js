@@ -50,4 +50,4 @@ const apiCall = async (
   }
 };
 
-export { apiCall };
+export default apiCall;

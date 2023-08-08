@@ -1,9 +1,9 @@
 import React from "react";
 import { useFormik } from "formik";
 import { Button, DialogActions } from "@mui/material";
-import UserFormFields from "./UserFormFields.component";
-import { validateUserCreateForm } from "./UserValidations";
 import { DialogTitle, DialogContent, DialogContentText } from "@mui/material";
+
+import { UserFormFields, validateUserCreateForm } from ".";
 
 const CreateUser = ({ onCreate }) => {
   const formik = useFormik({

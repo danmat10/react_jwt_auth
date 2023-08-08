@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Grid, TextField, Select, MenuItem, IconButton } from "@mui/material";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { DataGrid } from "@mui/x-data-grid";
 import ViewIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
+import { DataGrid } from "@mui/x-data-grid";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const UserList = ({ users, openDialog }) => {

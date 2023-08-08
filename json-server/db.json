@@ -1,13 +1,31 @@
 {
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
   "users": [
     {
       "login": "user",
       "name": "Daniel",
       "id": 1,
-      "cpf": "09022766977",
-      "registration": "432360-2",
+      "cpf": "00000000000",
+      "registration": "22-2",
       "permissions": "gestor",
-      "password": "user"
+      "password": "user",
+      "email": "daniel@gmail.com"
     }
   ]
 }

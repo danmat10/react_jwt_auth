@@ -18,24 +18,12 @@
   },
   "users": [
     {
-      "id": 1,
-      "email": "admin@admin.co",
-      "password": "admin",
-      "values": {
-        "name": "Daniel",
-        "email": "admin@admin.com"
-      },
-      "name": "Daniel"
-    },
-    {
-      "email": "daniel@mmm.com",
-      "name": "DANIEL MATTHES",
-      "id": 7
-    },
-    {
       "email": "user@user.com",
       "name": "Daniel",
-      "id": 8
+      "id": 8,
+      "cpf": "09022766977",
+      "registration": "432360-2",
+      "permissions": "gestor"
     },
     {
       "email": "user@user.com",
@@ -51,11 +39,6 @@
       "email": "user@user.com",
       "name": "Administrador",
       "id": 11
-    },
-    {
-      "email": "user@user.com",
-      "name": "Administrador",
-      "id": 12
     },
     {
       "email": "user@user.com",

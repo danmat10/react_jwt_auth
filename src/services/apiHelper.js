@@ -1,5 +1,18 @@
 import axios from "axios";
-const apiCall = async (method, endpoint, data = null, headers = {}) => {
+import { toast } from "react-toastify";
+
+const apiCall = async (
+  method,
+  endpoint,
+  data = null,
+  headers = {},
+  toastConfig = {
+    pending: "Processando...",
+    success: "Sucesso!",
+    error: "Erro ao processar.",
+    show: true,
+  }
+) => {
   const defaultHeaders = {
     "Content-Type": "application/json",
   };
@@ -14,31 +27,25 @@ const apiCall = async (method, endpoint, data = null, headers = {}) => {
     config.data = data;
   }
 
-  try {
-    const response = await axios(config);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const handleErrorResponse = (error, handleOpen, setMessage) => {
-  if (
-    error.response &&
-    (error.response.status === 401 || error.response.status === 403)
-  ) {
-    setMessage({
-      type: "error",
-      content: "Você não está autorizado. Por favor, faça login novamente.",
-    });
-    handleOpen();
+  if (toastConfig.show) {
+    return toast
+      .promise(axios(config), {
+        pending: toastConfig.pending,
+        success: toastConfig.success,
+        error: toastConfig.error,
+      })
+      .then((response) => response.data)
+      .catch((error) => {
+        toast.error(error.message);
+      });
   } else {
-    setMessage({
-      type: "error",
-      content: "O servidor está indisponível. Tente novamente mais tarde.",
-    });
-    handleOpen();
+    try {
+      const response = await axios(config);
+      return response.data;
+    } catch (error) {
+      toast.error(error.message);
+    }
   }
 };
 
-export { handleErrorResponse, apiCall };
+export { apiCall };

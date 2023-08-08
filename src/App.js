@@ -13,6 +13,7 @@ import "./App.css";
 import refreshApi from "./contexts/refreshApi";
 import User from "./pages/User";
 
+
 const ConditionalRoute = ({ Component, redirectTo, inverse = false }) => {
   const isAuthenticated = useIsAuthenticated();
   const auth = isAuthenticated();

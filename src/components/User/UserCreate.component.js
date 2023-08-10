@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import { Button, DialogActions } from "@mui/material";
-import { DialogTitle, DialogContent, DialogContentText } from "@mui/material";
+import { DialogTitle, DialogContent } from "@mui/material";
 
 import { UserFormFields, validateUserCreateForm } from ".";
 

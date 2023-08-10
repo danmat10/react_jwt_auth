@@ -9,8 +9,9 @@
   justify-content: flex-end;
 }
 
-.buttonAdicionar {
+.buttonCadastrar {
   margin-right: 20px;
+  height: 36px;
 }
 
 .userEditTitle {

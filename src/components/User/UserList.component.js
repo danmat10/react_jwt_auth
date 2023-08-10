@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Grid, TextField, Select, MenuItem, Chip, Button } from "@mui/material";
+import {
+  Grid,
+  TextField,
+  Select,
+  MenuItem,
+  Chip,
+  Button,
+  FormHelperText,
+} from "@mui/material";
 import ViewIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -130,6 +138,7 @@ const UserList = ({ users, openDialog }) => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        <FormHelperText>Pesquisar por nome, email...</FormHelperText>
       </Grid>
       <Grid item xs={12} md={4} lg={4}>
         <Select
@@ -142,14 +151,15 @@ const UserList = ({ users, openDialog }) => {
           <MenuItem value="Inativo">Inativo</MenuItem>
           <MenuItem value="Todos">Todos</MenuItem>
         </Select>
+        <FormHelperText>Filtrar por situação</FormHelperText>
       </Grid>
       <Grid item xs={12} md={4} lg={4} className={styles.buttonGrid}>
         <Button
           variant="contained"
           onClick={() => openDialog("create")}
-          className={styles.buttonAdicionar}
+          className={styles.buttonCadastrar}
         >
-          Adicionar
+          Cadastrar
         </Button>
       </Grid>
       <Grid item xs={12} md={12} lg={12}>

@@ -28,7 +28,7 @@ const CreateUser = ({ onCreate, onClose }) => {
         style={{ backgroundColor: "#0d6efd", color: "white" }}
         paragraph
       >
-        Criar Usuário
+        Cadastrar Usuário
       </DialogTitle>
       <DialogContent>
         <form onSubmit={formik.handleSubmit}>
@@ -38,7 +38,7 @@ const CreateUser = ({ onCreate, onClose }) => {
               Cancelar
             </Button>
             <Button type="submit" variant="contained">
-              Criar
+              Cadastrar
             </Button>
           </DialogActions>
         </form>

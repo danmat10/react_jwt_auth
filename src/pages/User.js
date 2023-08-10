@@ -110,21 +110,24 @@ const UserPage = () => {
   };
 
   return (
-    <div>
+    <>
       <Header />
       <Container maxWidth="xl">
-        <Grid item lg={12} paddingY={5}>
-          <UserBreadcrumb />
-          <Typography variant="h4" marginTop={2}>
-            Usuários
-          </Typography>
-        </Grid>
+        <Container maxWidth="xl">
+          <Grid item lg={12} paddingY={5}>
+            <UserBreadcrumb />
+            <Typography variant="h4" marginTop={2}>
+              Usuários
+            </Typography>
+          </Grid>
+        </Container>
+        <Container maxWidth="xl">{views.list}</Container>
       </Container>
-      <Container maxWidth="xl">{views.list}</Container>
+
       <Dialog open={state.openDialog} onClose={closeDialog}>
         {views[state.view]}
       </Dialog>
-    </div>
+    </>
   );
 };
 

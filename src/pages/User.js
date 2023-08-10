@@ -97,7 +97,13 @@ const UserPage = () => {
 
   const views = {
     list: <UserList users={state.users} openDialog={openDialog} />,
-    create: <UserCreate onCreate={handleCreateUser} openDialog={openDialog} />,
+    create: (
+      <UserCreate
+        onCreate={handleCreateUser}
+        openDialog={openDialog}
+        onClose={closeDialog}
+      />
+    ),
     update: (
       <UserEdit
         user={state.selectedUser}

@@ -5,7 +5,7 @@ import { DialogTitle, DialogContent, DialogContentText } from "@mui/material";
 
 import { UserFormFields, validateUserCreateForm } from ".";
 
-const CreateUser = ({ onCreate }) => {
+const CreateUser = ({ onCreate, onClose }) => {
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -31,15 +31,13 @@ const CreateUser = ({ onCreate }) => {
         Criar Usuário
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Você está na janela de criação de novo usuário. Preencha os campos com
-          as informações do novo usuário e clique em 'Criar' para adicionar à
-          lista de usuários.
-        </DialogContentText>
         <form onSubmit={formik.handleSubmit}>
           <UserFormFields formik={formik} />
           <DialogActions>
-            <Button type="submit" color="primary">
+            <Button variant="outlined" color="error" onClick={() => onClose()}>
+              Cancelar
+            </Button>
+            <Button type="submit" variant="contained">
               Criar
             </Button>
           </DialogActions>

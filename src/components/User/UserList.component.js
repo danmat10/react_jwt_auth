@@ -3,7 +3,7 @@ import { Grid, TextField, Select, MenuItem, Chip, Button } from "@mui/material";
 import ViewIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, ptBR } from "@mui/x-data-grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { styles } from ".";
@@ -161,6 +161,7 @@ const UserList = ({ users, openDialog }) => {
           pageSizeOptions={[10]}
           checkboxSelection={false}
           disableSelectionOnClick
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
         />
       </Grid>
     </Grid>

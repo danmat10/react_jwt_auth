@@ -13,6 +13,7 @@ const UserEdit = ({ user, onUpdate }) => {
       cpf: user.cpf || "",
       registration: user.registration || "",
       permissions: user.permissions || "",
+      active: user.active || false,
     },
     validate: (values) => validateUserEditForm(values, user),
     onSubmit: (values) => {
@@ -36,7 +37,7 @@ const UserEdit = ({ user, onUpdate }) => {
           alterações.
         </DialogContentText>
         <form onSubmit={formik.handleSubmit}>
-          <UserFormFields formik={formik} />
+          <UserFormFields formik={formik} isEditing={true} />
           <DialogActions>
             <Button type="submit" color="primary">
               Editar

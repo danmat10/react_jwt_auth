@@ -7,9 +7,11 @@ import {
   FormControlLabel,
   FormLabel,
   FormHelperText,
+  FormGroup,
+  Switch,
 } from "@mui/material";
 
-const UserFormFields = ({ formik }) => (
+const UserFormFields = ({ formik, isEditing = false }) => (
   <>
     <TextField
       fullWidth
@@ -47,7 +49,6 @@ const UserFormFields = ({ formik }) => (
       error={formik.touched.cpf && Boolean(formik.errors.cpf)}
       helperText={formik.touched.cpf && formik.errors.cpf}
     />
-
     <TextField
       fullWidth
       label="E-mail"
@@ -62,7 +63,6 @@ const UserFormFields = ({ formik }) => (
     />
     <FormControl component="fieldset" margin="dense">
       <FormLabel component="legend">Permissões</FormLabel>
-
       <RadioGroup
         row
         aria-label="permissions"
@@ -76,11 +76,37 @@ const UserFormFields = ({ formik }) => (
           control={<Radio />}
           label="Requisitante"
         />
+        <FormControlLabel
+          value="administrador"
+          control={<Radio />}
+          label="Administrador"
+        />
         {formik.touched.permissions && formik.errors.permissions && (
           <FormHelperText error>{formik.errors.permissions}</FormHelperText>
         )}
       </RadioGroup>
     </FormControl>
+    {isEditing && (
+      <FormControl component="fieldset" margin="dense">
+        <FormLabel component="legend">Situação</FormLabel>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formik.values.active}
+                onChange={formik.handleChange}
+                name="active"
+                color="primary"
+              />
+            }
+            label={formik.values.active ? "Ativo" : "Inativo"}
+          />
+          {formik.touched.active && formik.errors.active && (
+            <FormHelperText error>{formik.errors.active}</FormHelperText>
+          )}
+        </FormGroup>
+      </FormControl>
+    )}
   </>
 );
 

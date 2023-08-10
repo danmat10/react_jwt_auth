@@ -46,13 +46,15 @@ const validateUserEditForm = (values, user) => {
     values.email === user.email &&
     values.cpf === user.cpf &&
     values.registration === user.registration &&
-    values.permissions === user.permissions
+    values.permissions === user.permissions &&
+    values.active === user.active
   ) {
     errors.name = "Nenhuma alteração foi feita";
     errors.email = "Nenhuma alteração foi feita";
     errors.cpf = "Nenhuma alteração foi feita";
     errors.registration = "Nenhuma alteração foi feita";
     errors.permissions = "Nenhuma alteração foi feita";
+    errors.active = "Nenhuma alteração foi feita";
   }
 
   return errors;

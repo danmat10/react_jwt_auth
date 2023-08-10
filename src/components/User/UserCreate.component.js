@@ -13,6 +13,7 @@ const CreateUser = ({ onCreate }) => {
       cpf: "",
       email: "",
       permissions: "",
+      active: true,
     },
     validate: (values) => validateUserCreateForm(values),
     onSubmit: (values) => {

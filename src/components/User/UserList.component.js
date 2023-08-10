@@ -31,16 +31,16 @@ const UserList = ({ users, openDialog }) => {
         headerAlign: "center",
       },
       {
-        field: "situation",
+        field: "active",
         headerName: "Situação",
         flex: 1,
         align: "center",
         headerAlign: "center",
         renderCell: (params) =>
-          params.row.situation ? (
+          params.row.active ? (
             <Chip label="Ativo" color="success" />
           ) : (
-            <Chip label="Desativado" color="error" />
+            <Chip label="Inativo" color="error" />
           ),
       },
       {

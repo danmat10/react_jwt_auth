@@ -16,13 +16,26 @@ const UserList = ({ users, openDialog }) => {
 
   function getColumns(isMobile) {
     const baseColumns = [
-      { field: "name", headerName: "Nome", flex: 2 },
-      { field: "email", headerName: "E-mail", flex: 2 },
+      {
+        field: "name",
+        headerName: "Nome",
+        flex: 2,
+        align: "center",
+        headerAlign: "center",
+      },
+      {
+        field: "email",
+        headerName: "E-mail",
+        flex: 2,
+        align: "center",
+        headerAlign: "center",
+      },
       {
         field: "situation",
         headerName: "Situação",
         flex: 1,
-        hide: isMobile,
+        align: "center",
+        headerAlign: "center",
         renderCell: (params) =>
           params.row.situation ? (
             <Chip label="Ativo" color="success" />
@@ -34,11 +47,15 @@ const UserList = ({ users, openDialog }) => {
         field: "permissions",
         headerName: "Perfil",
         flex: 1,
+        align: "center",
+        headerAlign: "center",
       },
       {
         field: "actions",
         headerName: "Ações",
         flex: 1,
+        align: "center",
+        headerAlign: "center",
         renderCell: (params) => (
           <>
             <ViewIcon

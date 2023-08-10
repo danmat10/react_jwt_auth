@@ -98,7 +98,13 @@ const UserPage = () => {
   const views = {
     list: <UserList users={state.users} openDialog={openDialog} />,
     create: <UserCreate onCreate={handleCreateUser} openDialog={openDialog} />,
-    update: <UserEdit user={state.selectedUser} onUpdate={handleEditUser} />,
+    update: (
+      <UserEdit
+        user={state.selectedUser}
+        onUpdate={handleEditUser}
+        onClose={closeDialog}
+      />
+    ),
     view: <UserView user={state.selectedUser} />,
     delete: (
       <UserDelete
@@ -124,7 +130,11 @@ const UserPage = () => {
         <Container maxWidth="xl">{views.list}</Container>
       </Container>
 
-      <Dialog open={state.openDialog} onClose={closeDialog}>
+      <Dialog
+        open={state.openDialog}
+        onClose={closeDialog}
+        PaperProps={{ sx: { borderRadius: "28px" } }}
+      >
         {views[state.view]}
       </Dialog>
     </>

@@ -1,11 +1,11 @@
 import React from "react";
 import { useFormik } from "formik";
 import { Button, DialogActions } from "@mui/material";
-import { DialogTitle, DialogContentText, DialogContent } from "@mui/material";
+import { DialogTitle, DialogContent } from "@mui/material";
 
-import { UserFormFields, validateUserEditForm } from ".";
+import { UserFormFields, validateUserEditForm, styles } from ".";
 
-const UserEdit = ({ user, onUpdate }) => {
+const UserEdit = ({ user, onUpdate, onClose }) => {
   const formik = useFormik({
     initialValues: {
       name: user.name || "",
@@ -24,22 +24,17 @@ const UserEdit = ({ user, onUpdate }) => {
 
   return (
     <>
-      <DialogTitle
-        style={{ backgroundColor: "#0d6efd", color: "white" }}
-        paragraph
-      >
+      <DialogTitle className={styles.userEditTitle} paragraph>
         Editar Usuário
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Você está na janela de edição de usuário. Por favor, atualize as
-          informações necessárias e clique em 'Salvar' para confirmar as
-          alterações.
-        </DialogContentText>
         <form onSubmit={formik.handleSubmit}>
           <UserFormFields formik={formik} isEditing={true} />
           <DialogActions>
-            <Button type="submit" color="primary">
+            <Button variant="outlined" color="error" onClick={() => onClose()}>
+              Cancelar
+            </Button>
+            <Button type="submit" variant="contained">
               Editar
             </Button>
           </DialogActions>

@@ -12,3 +12,8 @@
 .buttonAdicionar {
   margin-right: 20px;
 }
+
+.userEditTitle {
+  background: linear-gradient(90.83deg, #0066ff 8.37%, #00c2ff 96.86%);
+  color: white;
+}

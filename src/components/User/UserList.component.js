@@ -98,19 +98,25 @@ const UserList = ({ users, openDialog }) => {
     return baseColumns;
   }
 
+  function matchesSearch(user) {
+    return Object.values(user).some(
+      (value) =>
+        typeof value === "string" &&
+        value.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+
   const filteredUsers = users.filter((user) => {
-    const matchesSearch =
-      user.name?.toLowerCase().includes(search.toLowerCase()) ||
-      user.email?.toLowerCase().includes(search.toLowerCase());
+    const doesMatchSearch = matchesSearch(user);
 
     switch (situationFilter) {
       case "Ativo":
-        return matchesSearch && user.situation;
+        return doesMatchSearch && user.situation;
       case "Inativo":
-        return matchesSearch && !user.situation;
+        return doesMatchSearch && !user.situation;
       case "Todos":
       default:
-        return matchesSearch;
+        return doesMatchSearch;
     }
   });
 

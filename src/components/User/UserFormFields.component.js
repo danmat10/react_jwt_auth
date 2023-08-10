@@ -20,7 +20,6 @@ const UserFormFields = ({ formik, isEditing = false }) => (
       type="text"
       margin="dense"
       onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
       value={formik.values.name}
       error={formik.touched.name && Boolean(formik.errors.name)}
       helperText={formik.touched.name && formik.errors.name}
@@ -32,7 +31,6 @@ const UserFormFields = ({ formik, isEditing = false }) => (
       type="text"
       margin="dense"
       onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
       value={formik.values.registration}
       error={formik.touched.registration && Boolean(formik.errors.registration)}
       helperText={formik.touched.registration && formik.errors.registration}
@@ -44,7 +42,6 @@ const UserFormFields = ({ formik, isEditing = false }) => (
       type="text"
       margin="dense"
       onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
       value={formik.values.cpf}
       error={formik.touched.cpf && Boolean(formik.errors.cpf)}
       helperText={formik.touched.cpf && formik.errors.cpf}
@@ -56,7 +53,6 @@ const UserFormFields = ({ formik, isEditing = false }) => (
       type="email"
       margin="dense"
       onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
       value={formik.values.email}
       error={formik.touched.email && Boolean(formik.errors.email)}
       helperText={formik.touched.email && formik.errors.email}

@@ -1,0 +1,13 @@
+.userListGrid {
+  background-color: white;
+  padding: 20px;
+}
+
+.buttonGrid {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttonAdicionar {
+  margin-right: 20px;
+}

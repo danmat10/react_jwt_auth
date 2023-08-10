@@ -1,77 +1,133 @@
 import React, { useState } from "react";
-import { Grid, TextField, Select, MenuItem, IconButton } from "@mui/material";
+import { Grid, TextField, Select, MenuItem, Chip, Button } from "@mui/material";
 import ViewIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
-import { DataGrid } from "@mui/x-data-grid";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { DataGrid } from "@mui/x-data-grid";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+import { styles } from ".";
 
 const UserList = ({ users, openDialog }) => {
+  const isMobile = useMediaQuery("(max-width:600px)");
   const [search, setSearch] = useState("");
-  const [selectedColumn, setSelectedColumn] = useState("name");
+  const [situationFilter, setSituationFilter] = useState("Todos");
+  const columns = getColumns(isMobile);
 
-  const filteredUsers = users.filter((user) =>
-    user[selectedColumn]?.toLowerCase().includes(search.toLowerCase())
-  );
+  function getColumns(isMobile) {
+    const baseColumns = [
+      { field: "name", headerName: "Nome", flex: 2 },
+      { field: "email", headerName: "E-mail", flex: 2 },
+      {
+        field: "situation",
+        headerName: "Situação",
+        flex: 1,
+        hide: isMobile,
+        renderCell: (params) =>
+          params.row.situation ? (
+            <Chip label="Ativo" color="success" />
+          ) : (
+            <Chip label="Desativado" color="error" />
+          ),
+      },
+      {
+        field: "permissions",
+        headerName: "Perfil",
+        flex: 1,
+      },
+      {
+        field: "actions",
+        headerName: "Ações",
+        flex: 1,
+        renderCell: (params) => (
+          <>
+            <ViewIcon
+              color="primary"
+              onClick={() => openDialog("view", params.row)}
+              style={{ cursor: "pointer" }}
+              titleAccess="Visualizar"
+            />
+            <EditIcon
+              color="primary"
+              onClick={() => openDialog("update", params.row)}
+              style={{ cursor: "pointer" }}
+              titleAccess="Editar"
+            />
+            <DeleteIcon
+              color="secondary"
+              onClick={() => openDialog("delete", params.row)}
+              style={{ cursor: "pointer" }}
+              titleAccess="Excluir"
+            />
+          </>
+        ),
+      },
+    ];
 
-  const columns = [
-    { field: "name", headerName: "Nome", flex: 2 },
-    { field: "email", headerName: "E-mail", flex: 1 },
-    {
-      field: "actions",
-      headerName: "Ações",
-      flex: 1,
-      renderCell: (params) => (
-        <>
-          <ViewIcon
-            color="primary"
-            onClick={() => openDialog("view", params.row)}
-            style={{ cursor: "pointer" }}
-            titleAccess="Visualizar"
-          />
-          <EditIcon
-            color="primary"
-            onClick={() => openDialog("update", params.row)}
-            style={{ cursor: "pointer" }}
-            titleAccess="Editar"
-          />
-          <DeleteIcon
-            color="secondary"
-            onClick={() => openDialog("delete", params.row)}
-            style={{ cursor: "pointer" }}
-            titleAccess="Excluir"
-          />
-        </>
-      ),
-    },
-  ];
+    if (isMobile) {
+      return baseColumns
+        .filter(
+          (column) => column.field === "name" || column.field === "actions"
+        )
+        .map((column) => {
+          if (column.field === "name") {
+            return { ...column, flex: 1 };
+          } else if (column.field === "actions") {
+            return { ...column, flex: 1 };
+          }
+          return column;
+        });
+    }
+    return baseColumns;
+  }
+
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch =
+      user.name?.toLowerCase().includes(search.toLowerCase()) ||
+      user.email?.toLowerCase().includes(search.toLowerCase());
+
+    switch (situationFilter) {
+      case "Ativo":
+        return matchesSearch && user.situation;
+      case "Inativo":
+        return matchesSearch && !user.situation;
+      case "Todos":
+      default:
+        return matchesSearch;
+    }
+  });
 
   return (
-    <>
-      <Grid item xs={6} md={4} lg={4}>
+    <Grid container spacing={3} className={styles.userListGrid}>
+      <Grid item xs={12} md={4} lg={4}>
         <TextField
           fullWidth
           variant="outlined"
-          label="Pesquisar usuário"
+          label="Pesquisar"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </Grid>
-      <Grid item xs={4} md={4} lg={4}>
+      <Grid item xs={12} md={4} lg={4}>
         <Select
           fullWidth
           variant="outlined"
-          value={selectedColumn}
-          onChange={(e) => setSelectedColumn(e.target.value)}
+          value={situationFilter}
+          onChange={(e) => setSituationFilter(e.target.value)}
         >
-          <MenuItem value="name">Nome</MenuItem>
-          <MenuItem value="email">E-mail</MenuItem>
+          <MenuItem value="Ativo">Ativo</MenuItem>
+          <MenuItem value="Inativo">Inativo</MenuItem>
+          <MenuItem value="Todos">Todos</MenuItem>
         </Select>
       </Grid>
-      <Grid item xs={2} md={2} lg={2}>
-        <IconButton>
-          <FilterListIcon />
-        </IconButton>
+      <Grid item xs={12} md={4} lg={4} className={styles.buttonGrid}>
+        <Button
+          variant="contained"
+          onClick={() => openDialog("create")}
+          className={styles.buttonAdicionar}
+        >
+          Adicionar
+        </Button>
       </Grid>
       <Grid item xs={12} md={12} lg={12}>
         <DataGrid
@@ -84,7 +140,7 @@ const UserList = ({ users, openDialog }) => {
           disableSelectionOnClick
         />
       </Grid>
-    </>
+    </Grid>
   );
 };
 

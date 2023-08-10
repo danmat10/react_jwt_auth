@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuthHeader } from "react-auth-kit";
-import { Container, Fab, Typography, Grid } from "@mui/material";
+import { Container, Typography, Grid } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
-import AddIcon from "@mui/icons-material/Add";
 
 import {
   UserList,
@@ -10,6 +9,7 @@ import {
   UserView,
   UserDelete,
   UserCreate,
+  UserBreadcrumb,
 } from "../components/User";
 import { Header } from "../components/Header";
 import { apiCall, ENDPOINTS } from "../services";
@@ -97,7 +97,7 @@ const UserPage = () => {
 
   const views = {
     list: <UserList users={state.users} openDialog={openDialog} />,
-    create: <UserCreate onCreate={handleCreateUser} />,
+    create: <UserCreate onCreate={handleCreateUser} openDialog={openDialog} />,
     update: <UserEdit user={state.selectedUser} onUpdate={handleEditUser} />,
     view: <UserView user={state.selectedUser} />,
     delete: (
@@ -112,23 +112,15 @@ const UserPage = () => {
   return (
     <div>
       <Header />
-      <Container>
-        <Grid container spacing={3}>
-          <Grid item lg={12}>
-            <Typography variant="h4">User Management</Typography>
-          </Grid>
-          {views.list}
+      <Container maxWidth="xl">
+        <Grid item lg={12} paddingY={5}>
+          <UserBreadcrumb />
+          <Typography variant="h4" marginTop={2}>
+            Usuários
+          </Typography>
         </Grid>
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={() => openDialog("create")}
-          style={{ position: "fixed", bottom: 20, right: 20 }}
-          title="Adicionar usuário"
-        >
-          <AddIcon />
-        </Fab>
       </Container>
+      <Container maxWidth="xl">{views.list}</Container>
       <Dialog open={state.openDialog} onClose={closeDialog}>
         {views[state.view]}
       </Dialog>
